@@ -5,11 +5,11 @@ import { ArrowRight } from "lucide-react";
 
 export default function PrivacyPolicyPage() {
     return (
-        <div className="min-h-screen bg-white p-4">
+        <div className="min-h-screen bg-white p-1 sm:p-4">
             <div className="relative rounded-3xl overflow-hidden">
                 <Header />
 
-                <section className="relative pt-36 pb-20 px-6 sm:px-8 lg:px-10">
+                <section className="relative pt-36 pb-20 px-2 sm:px-8 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
                         style={{ backgroundImage: "url('/page-header.jpg')" }}
@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
                 </section>
             </div>
 
-            <section className="py-16 lg:py-24 px-6 sm:px-8 lg:px-10 bg-slate-50">
+            <section className="py-16 lg:py-24 px-2 sm:px-8 lg:px-10 bg-slate-50">
                 <div className="max-w-4xl mx-auto rounded-3xl border border-slate-200 bg-white p-7 sm:p-10 shadow-sm">
                     <div className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-p:text-slate-600 prose-p:leading-relaxed">
                         <h2 className="text-2xl sm:text-3xl">CAREFULLY READ OUR PRIVACY POLICY BEFORE USING OUR SITES.</h2>

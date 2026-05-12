@@ -14,7 +14,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white p-4">
+    <div className="min-h-screen bg-white p-1 sm:p-4">
       <div className="relative rounded-3xl overflow-hidden">
         <Header />
         <Hero />

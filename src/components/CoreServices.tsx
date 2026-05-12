@@ -61,7 +61,7 @@ const services = [
 
 export default function CoreServices() {
     return (
-        <section className="bg-gradient-to-b from-slate-50 via-blue-50/40 to-slate-100 px-6 py-16 sm:px-8 lg:px-10 lg:py-20">
+        <section className="bg-gradient-to-b from-slate-50 via-blue-50/40 to-slate-100 px-2 py-16 sm:px-8 lg:px-10 lg:py-20">
             <div className="mx-auto max-w-7xl">
                 <div className="mb-10 flex flex-col gap-4">
                     <span className="inline-flex w-fit items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-blue-700">

@@ -161,11 +161,11 @@ export default function FleetPage() {
     };
 
     return (
-        <div className="min-h-screen bg-white p-4">
+        <div className="min-h-screen bg-white p-1 sm:p-4">
             <div className="relative rounded-3xl overflow-hidden">
                 <Header />
 
-                <section className="relative pt-36 pb-20 px-6 sm:px-8 lg:px-10">
+                <section className="relative pt-36 pb-20 px-2 sm:px-8 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
                         style={{ backgroundImage: "url('/page-header.jpg')" }}
@@ -216,7 +216,7 @@ export default function FleetPage() {
                 </section>
             </div>
 
-            <section className="py-16 lg:py-24 px-6 sm:px-8 lg:px-10 bg-gradient-to-b from-slate-50 via-blue-50/40 to-slate-100">
+            <section className="py-16 lg:py-24 px-2 sm:px-8 lg:px-10 bg-gradient-to-b from-slate-50 via-blue-50/40 to-slate-100">
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-12 flex flex-col gap-4">
                         <span className="inline-flex w-fit items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700">
@@ -296,7 +296,7 @@ export default function FleetPage() {
                 </div>
             </section>
 
-            <section className="py-16 lg:py-24 px-6 sm:px-8 lg:px-10">
+            <section className="py-16 lg:py-24 px-2 sm:px-8 lg:px-10">
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-10 text-center">
                         <span className="inline-block text-xs font-semibold text-blue-600 border border-blue-200 bg-blue-50 rounded-full px-4 py-1.5 mb-4">

@@ -41,11 +41,11 @@ export default async function BlogPage() {
     const hasPosts = apiPosts.length > 0;
 
     return (
-        <div className="min-h-screen bg-white p-4">
+        <div className="min-h-screen bg-white p-1 sm:p-4">
             <div className="relative rounded-3xl overflow-hidden">
                 <Header />
 
-                <section className="relative pt-36 pb-20 px-6 sm:px-8 lg:px-10">
+                <section className="relative pt-36 pb-20 px-2 sm:px-8 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
                         style={{ backgroundImage: "url('/page-header.jpg')" }}
@@ -84,7 +84,7 @@ export default async function BlogPage() {
                 </section>
             </div>
 
-            <section className="py-16 lg:py-24 px-6 sm:px-8 lg:px-10">
+            <section className="py-16 lg:py-24 px-2 sm:px-8 lg:px-10">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
                         <span className="inline-block text-xs font-semibold text-blue-600 border border-blue-200 bg-blue-50 rounded-full px-4 py-1.5 mb-4">

@@ -150,7 +150,7 @@ export default async function ToursPage({
     };
 
     return (
-        <div className="min-h-screen bg-white p-4">
+        <div className="min-h-screen bg-white p-1 sm:p-4">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
@@ -162,7 +162,7 @@ export default async function ToursPage({
             <div className="relative rounded-3xl overflow-hidden">
                 <Header />
 
-                <section className="relative pt-36 pb-20 px-6 sm:px-8 lg:px-10">
+                <section className="relative pt-36 pb-20 px-2 sm:px-8 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
                         style={{ backgroundImage: "url('/page-header.jpg')" }}
@@ -193,7 +193,7 @@ export default async function ToursPage({
                 </section>
             </div>
 
-            <section className="py-14 px-6 sm:px-8 lg:px-10">
+            <section className="py-14 px-2 sm:px-8 lg:px-10">
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-7 flex flex-wrap items-center gap-2">
                         <Link

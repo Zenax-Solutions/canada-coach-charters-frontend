@@ -27,7 +27,7 @@ export default function AboutUs() {
 
     return (
         <>
-            <section className="bg-white py-16 lg:py-20 px-6 sm:px-8 lg:px-10">
+            <section className="bg-white py-16 lg:py-20 px-2 sm:px-8 lg:px-10">
                 <div className="max-w-7xl mx-auto">
 
                     {/* Badge bar */}

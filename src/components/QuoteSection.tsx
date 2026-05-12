@@ -9,7 +9,7 @@ const perks = [
 
 export default function QuoteSection() {
     return (
-        <section className="relative overflow-hidden rounded-[2rem] py-16 lg:py-24 px-6 sm:px-8 lg:px-10">
+        <section className="relative overflow-hidden rounded-[2rem] py-16 lg:py-24 px-2 sm:px-8 lg:px-10">
             <video
                 autoPlay
                 muted

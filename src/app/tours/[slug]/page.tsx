@@ -212,7 +212,7 @@ export default async function TourDetailPage({ params }: { params: Promise<{ slu
             <div className="relative rounded-3xl overflow-hidden">
                 <Header />
 
-                <section className="relative px-4 pb-14 pt-28 sm:px-8 sm:pb-20 sm:pt-36 lg:px-10">
+                <section className="relative px-2 pb-14 pt-28 sm:px-8 sm:pb-20 sm:pt-36 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
                         style={{ backgroundImage: "url('/page-header.jpg')" }}
@@ -253,7 +253,7 @@ export default async function TourDetailPage({ params }: { params: Promise<{ slu
                 </section>
             </div>
 
-            <section className="px-4 py-10 sm:px-8 sm:py-14 lg:px-10 lg:py-20">
+            <section className="px-2 py-10 sm:px-8 sm:py-14 lg:px-10 lg:py-20">
                 <article className="max-w-6xl mx-auto">
                     <div className="relative mb-6 h-56 overflow-hidden rounded-2xl sm:mb-8 sm:h-[26rem] sm:rounded-3xl">
                         {imgSrc ? (
