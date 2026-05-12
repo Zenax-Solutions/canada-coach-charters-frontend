@@ -297,7 +297,7 @@ export default function Hero() {
                 </div>
 
                 {/* Right — booking card */}
-                <div className="w-full lg:w-[420px] shrink-0 flex items-center">
+                <div className="hidden md:flex w-full lg:w-[420px] shrink-0 items-center">
                     <div className="w-full">
 
                         {/* Browser-style tabs — Charter / Transfer / Tour */}
