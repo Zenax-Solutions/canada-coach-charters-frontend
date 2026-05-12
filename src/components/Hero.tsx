@@ -199,7 +199,7 @@ export default function Hero() {
 
                     {/* Headline with flip word */}
                     <div>
-                        <h1 className="text-4xl sm:text-5xl xl:text-[3.4rem] text-white leading-tight tracking-tight">
+                        <h1 className="text-4xl sm:text-5xl xl:text-[3.4rem] text-white font-bold sm:font-normal leading-tight tracking-tight">
                             Your Smart Choice<br />
                             for Long-Distance<br />
                             <span
