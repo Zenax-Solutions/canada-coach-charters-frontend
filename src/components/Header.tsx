@@ -175,8 +175,8 @@ export default function Header() {
                 {/* Mobile nav drawer */}
                 <div
                     className={cn(
-                        "lg:hidden overflow-hidden transition-all duration-300 rounded-b-2xl bg-black/45 backdrop-blur-md border-t border-white/10 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.75)]",
-                        mobileOpen ? "max-h-screen" : "max-h-0"
+                        "lg:hidden overflow-x-hidden overflow-y-auto overscroll-contain touch-pan-y [webkit-overflow-scrolling:touch] transition-all duration-300 rounded-b-2xl bg-black/45 backdrop-blur-md border-t border-white/10 shadow-[0_18px_35px_-16px_rgba(0,0,0,0.75)]",
+                        mobileOpen ? "max-h-[calc(100dvh-7rem)]" : "max-h-0"
                     )}
                 >
                     <nav className="flex flex-col px-4 py-3 gap-1">

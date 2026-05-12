@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { CalendarIcon, ArrowUpRight, Bus, MapPin, Users, Mail, Phone, Loader2, Star, ShieldCheck, Clock3, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -16,6 +17,7 @@ const flipWords = ["Travel", "Adventure", "Discovery", "Freedom"];
 type ServiceType = "charter" | "transfer" | "tour";
 
 export default function Hero() {
+    const [videoFailed, setVideoFailed] = useState(false);
     const [serviceType, setServiceType] = useState<ServiceType>("charter");
     const [isLoading, setIsLoading] = useState(false);
     const [tripDate, setTripDate] = useState<Date | undefined>();
@@ -173,16 +175,29 @@ export default function Hero() {
     };
 
     return (
-        <section className="relative overflow-hidden" style={{ minHeight: "680px" }}>
-            {/* Background video */}
-            <video
-                className="absolute inset-0 w-full h-full object-cover"
-                src="/hero/13456587_3840_2160_30fps.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-            />
+        <section className="relative overflow-x-hidden" style={{ minHeight: "680px" }}>
+            {/* Background media (video with image fallback) */}
+            {videoFailed ? (
+                <Image
+                    className="absolute inset-0 object-cover"
+                    src="/hero/1.jpg"
+                    alt="Coach charter hero"
+                    fill
+                    priority
+                />
+            ) : (
+                <video
+                    className="absolute inset-0 w-full h-full object-cover"
+                    src="/hero/13456587_3840_2160_30fps.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    poster="/hero/1.jpg"
+                    preload="metadata"
+                    onError={() => setVideoFailed(true)}
+                />
+            )}
             {/* Left-to-right dark gradient */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent" />
 
@@ -369,7 +384,7 @@ export default function Hero() {
                                                 className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
                                             />
                                             {pickupSuggestions.length > 0 && (
-                                                <div className="absolute z-30 mt-1 w-full max-h-48 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+                                                <div className="absolute z-30 mt-1 w-full max-h-56 sm:max-h-48 overflow-y-auto overscroll-contain touch-pan-y rounded-xl border border-gray-200 bg-white shadow-lg [webkit-overflow-scrolling:touch]">
                                                     {pickupSuggestions.map((s, index) => (
                                                         <button
                                                             key={`${s.lat}-${s.lon}-${s.label}`}
@@ -430,7 +445,7 @@ export default function Hero() {
                                                 className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
                                             />
                                             {dropoffSuggestions.length > 0 && (
-                                                <div className="absolute z-30 mt-1 w-full max-h-48 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+                                                <div className="absolute z-30 mt-1 w-full max-h-56 sm:max-h-48 overflow-y-auto overscroll-contain touch-pan-y rounded-xl border border-gray-200 bg-white shadow-lg [webkit-overflow-scrolling:touch]">
                                                     {dropoffSuggestions.map((s, index) => (
                                                         <button
                                                             key={`${s.lat}-${s.lon}-${s.label}`}
