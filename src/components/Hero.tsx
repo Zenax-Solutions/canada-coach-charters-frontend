@@ -187,7 +187,7 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent" />
 
             {/* Content grid */}
-            <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-8 lg:px-10 flex flex-col lg:flex-row items-center gap-6 pt-24 pb-12" style={{ minHeight: "680px" }}>
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 flex flex-col lg:flex-row items-center gap-6 pt-24 pb-12" style={{ minHeight: "680px" }}>
 
                 {/* Left — slogan, headline, description, CTAs */}
                 <div className="flex-1 flex flex-col gap-4">
