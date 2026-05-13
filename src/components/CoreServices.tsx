@@ -14,8 +14,10 @@ import {
     Wine,
     Landmark,
     Compass,
+    ArrowRight,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const services = [
     {
@@ -63,16 +65,28 @@ export default function CoreServices() {
     return (
         <section className="bg-gradient-to-b from-slate-50 via-blue-50/40 to-slate-100 px-2 py-16 sm:px-8 lg:px-10 lg:py-20">
             <div className="mx-auto max-w-7xl">
-                <div className="mb-10 flex flex-col gap-4">
-                    <span className="inline-flex w-fit items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-blue-700">
-                        Our Services
-                    </span>
-                    <h2 className="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
-                        We are committed to delivering exceptional services
-                    </h2>
-                    <p className="max-w-4xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                        Welcome to Canada Coach Charters, where we are committed to delivering exceptional services to meet your unique needs. We provide Wedding, Corporate Travel, School rental, Private travel and Airport shuttle services at very affordable cost.
-                    </p>
+                <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+                    <div className="flex flex-col gap-4">
+                        <span className="inline-flex w-fit items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-blue-700">
+                            Our Services
+                        </span>
+                        <h2 className="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+                            We are committed to delivering exceptional services
+                        </h2>
+                        <p className="max-w-4xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                            Welcome to Canada Coach Charters, where we are committed to delivering exceptional services to meet your unique needs. We provide Wedding, Corporate Travel, School rental, Private travel and Airport shuttle services at very affordable cost.
+                        </p>
+                    </div>
+
+                    <Link
+                        href="/services"
+                        className="inline-flex w-fit items-center justify-between gap-3 pl-5 pr-2 py-2 rounded-full text-sm font-semibold text-white bg-blue-700 hover:bg-blue-800 transition-colors"
+                    >
+                        <span>View More</span>
+                        <span className="w-9 h-9 rounded-full bg-white flex items-center justify-center shrink-0">
+                            <ArrowRight className="h-4 w-4 text-blue-700 -rotate-45" />
+                        </span>
+                    </Link>
                 </div>
 
                 <div className="grid items-stretch gap-5 md:grid-cols-2 xl:grid-cols-3">

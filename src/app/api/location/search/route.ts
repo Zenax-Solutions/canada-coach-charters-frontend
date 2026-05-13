@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-const GTA_VIEWBOX = "-80.2,44.3,-78.9,43.2";
-
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const q = searchParams.get("q")?.trim() ?? "";
@@ -10,7 +8,7 @@ export async function GET(request: Request) {
         return NextResponse.json([]);
     }
 
-    const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=ca&bounded=1&viewbox=${encodeURIComponent(GTA_VIEWBOX)}&addressdetails=1&limit=5&q=${encodeURIComponent(q)}`;
+    const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=8&dedupe=1&q=${encodeURIComponent(q)}`;
 
     const res = await fetch(url, {
         headers: {

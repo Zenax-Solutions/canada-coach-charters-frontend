@@ -37,6 +37,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "coachcharters.zenaxerp.com",
+        pathname: "/storage/**",
+      },
       backendStoragePattern,
     ],
   },

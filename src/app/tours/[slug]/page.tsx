@@ -7,6 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ChevronLeft, ChevronRight, Clock3, MapPin, Users } from "lucide-react";
 import { storageUrl } from "@/lib/api";
+import TourRequestModalButton from "@/components/TourRequestModalButton";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://canadacoachcharters.ca";
 
@@ -352,13 +353,7 @@ export default async function TourDetailPage({ params }: { params: Promise<{ slu
                                 <p className="text-xs font-semibold text-blue-700">Starting from</p>
                                 <p className="mt-1 text-3xl font-bold text-blue-900">USD {Number(tour.price_per_person).toLocaleString()}</p>
                                 <p className="mt-1 text-xs text-blue-700">Per person (indicative)</p>
-                                <Link
-                                    href="/contact"
-                                    className="mt-4 inline-flex w-full items-center justify-between gap-2 rounded-full bg-blue-700 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-800"
-                                >
-                                    Request This Tour
-                                    <ChevronRight className="w-4 h-4" />
-                                </Link>
+                                <TourRequestModalButton tourSlug={tour.slug} tourTitle={tour.title} />
                             </div>
 
                             {tour.pricing_periods && tour.pricing_periods.length > 0 && (

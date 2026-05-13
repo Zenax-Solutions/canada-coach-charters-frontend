@@ -48,7 +48,9 @@ export default function GTAServiceAreas() {
 
     // --- wheel zoom ---
     const onWheel = useCallback((e: React.WheelEvent) => {
-        e.preventDefault();
+        if (e.cancelable) {
+            e.preventDefault();
+        }
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
         setScale((s) => clamp(s * delta, MIN_SCALE, MAX_SCALE));
     }, []);
@@ -69,7 +71,9 @@ export default function GTAServiceAreas() {
     }, [translate]);
 
     const onTouchMove = useCallback((e: React.TouchEvent) => {
-        e.preventDefault();
+        if (e.cancelable) {
+            e.preventDefault();
+        }
         if (e.touches.length === 2) {
             const dx = e.touches[0].clientX - e.touches[1].clientX;
             const dy = e.touches[0].clientY - e.touches[1].clientY;

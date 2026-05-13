@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, MapPin, Clock3, Users } from "lucide-react";
 import { storageUrl } from "@/lib/api";
+import { getTourCategories, getTours } from "@/lib/tours";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://canadacoachcharters.ca";
 
@@ -56,67 +57,16 @@ export const metadata: Metadata = {
     },
 };
 
-interface TourCategory {
-    id: number;
-    name: string;
-    slug: string;
-    tours_count: number;
-}
-
-interface TourListItem {
-    id: number;
-    title: string;
-    slug: string;
-    short_description: string;
-    featured_image: string | null;
-    duration_days: number;
-    start_location: string;
-    max_group_size: number;
-    price_per_person: number;
-    country: string | null;
-    category: { name: string; slug: string } | null;
-}
-
-interface ToursResponse {
-    data: TourListItem[];
-}
-
-async function getCategories(): Promise<TourCategory[]> {
-    try {
-        const base = process.env.NEXT_PUBLIC_API_URL;
-        if (!base) return [];
-        const res = await fetch(`${base}/tours/categories`, { next: { revalidate: 60 } });
-        if (!res.ok) return [];
-        return (await res.json()) as TourCategory[];
-    } catch {
-        return [];
-    }
-}
-
-async function getTours(category?: string): Promise<TourListItem[]> {
-    try {
-        const base = process.env.NEXT_PUBLIC_API_URL;
-        if (!base) return [];
-        const query = new URLSearchParams({ per_page: "24" });
-        if (category) query.set("category", category);
-
-        const res = await fetch(`${base}/tours?${query.toString()}`, { next: { revalidate: 60 } });
-        if (!res.ok) return [];
-
-        const json = (await res.json()) as ToursResponse;
-        return json.data ?? [];
-    } catch {
-        return [];
-    }
-}
-
 export default async function ToursPage({
     searchParams,
 }: {
     searchParams: Promise<{ category?: string }>;
 }) {
     const { category } = await searchParams;
-    const [categories, tours] = await Promise.all([getCategories(), getTours(category)]);
+    const [categories, tours] = await Promise.all([
+        getTourCategories(),
+        getTours({ category, perPage: 24 }),
+    ]);
 
     const itemListSchema = {
         "@context": "https://schema.org",

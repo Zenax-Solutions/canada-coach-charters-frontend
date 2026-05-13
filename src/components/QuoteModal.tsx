@@ -12,6 +12,7 @@ interface QuoteModalProps {
     title: string;
     serviceType: ServiceType;
     context?: string;
+    initialTourSlug?: string;
 }
 
 export default function QuoteModal({
@@ -20,6 +21,7 @@ export default function QuoteModal({
     title,
     serviceType,
     context,
+    initialTourSlug,
 }: QuoteModalProps) {
     const [shouldRender, setShouldRender] = useState(isOpen);
     const [isVisible, setIsVisible] = useState(false);
@@ -53,8 +55,8 @@ export default function QuoteModal({
         >
             <div
                 className={`relative flex w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-2rem)] transition-all duration-200 ${isVisible
-                        ? "translate-y-0 scale-100 opacity-100"
-                        : "translate-y-3 scale-[0.98] opacity-0"
+                    ? "translate-y-0 scale-100 opacity-100"
+                    : "translate-y-3 scale-[0.98] opacity-0"
                     }`}
                 onClick={(event) => event.stopPropagation()}
             >
@@ -77,6 +79,7 @@ export default function QuoteModal({
                         variant="section"
                         initialServiceType={serviceType}
                         quoteContext={context}
+                        initialTourSlug={initialTourSlug}
                     />
                 </div>
             </div>

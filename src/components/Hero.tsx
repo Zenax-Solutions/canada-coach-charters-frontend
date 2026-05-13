@@ -180,7 +180,7 @@ export default function Hero() {
             {videoFailed ? (
                 <Image
                     className="absolute inset-0 object-cover"
-                    src="/hero/1.jpg"
+                    src="/hero/2.jpg"
                     alt="Coach charter hero"
                     fill
                     priority
@@ -193,7 +193,7 @@ export default function Hero() {
                     muted
                     loop
                     playsInline
-                    poster="/hero/1.jpg"
+                    poster="/hero/2.jpg"
                     preload="metadata"
                     onError={() => setVideoFailed(true)}
                 />

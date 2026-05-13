@@ -1,12 +1,14 @@
 "use client";
 
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { forwardRef, useEffect, useState, type ButtonHTMLAttributes } from "react";
 import { MapPin, Calendar, Users, Phone, Mail, ArrowUpRight, AlertCircle, Loader2, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarPicker } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
-import { submitQuote } from "@/lib/api";
+import { storageUrl, submitQuote } from "@/lib/api";
 import { geocodeFirstGtaLocation, getDrivingRouteMetrics, searchGtaLocations, type GeoPoint, type RouteMetrics } from "@/lib/location";
 
 type ServiceType = "charter" | "transfer" | "tour";
@@ -22,12 +24,23 @@ const TRANSFER_OPTIONS = [
     "Private Transfer",
 ];
 
-const TOUR_DESTINATIONS = [
-    "Niagara Falls",
-    "Wine Country",
-    "Toronto City",
-    "Ontario Adventures",
-];
+interface TourListItem {
+    id: number;
+    title: string;
+    slug: string;
+    short_description: string;
+    featured_image: string | null;
+    duration_days: number;
+    start_location: string;
+    max_group_size: number;
+    price_per_person: number;
+    country: string | null;
+    category: { name: string; slug: string } | null;
+}
+
+interface ToursResponse {
+    data: TourListItem[];
+}
 
 interface BookingCardProps {
     ctaLabel?: string;
@@ -35,6 +48,7 @@ interface BookingCardProps {
     mode?: Mode;
     initialServiceType?: ServiceType;
     quoteContext?: string;
+    initialTourSlug?: string;
 }
 
 const fmtDate = (d: Date) =>
@@ -84,7 +98,10 @@ export default function BookingCard({
     mode = "quote",
     initialServiceType = "charter",
     quoteContext,
+    initialTourSlug,
 }: BookingCardProps) {
+    const searchParams = useSearchParams();
+
     /* ── Booking mode state ── */
     const [tripType, setTripType] = useState<TripType>("inter-city");
     const [from, setFrom] = useState("");
@@ -112,7 +129,8 @@ export default function BookingCard({
     const [pickupTime, setPickupTime] = useState("");
     const [departureDate, setDepartureDate] = useState<Date | undefined>();
     const [departureTime, setDepartureTime] = useState("");
-    const [tourDestination, setTourDestination] = useState("");
+    const [selectedTourSlug, setSelectedTourSlug] = useState("");
+    const [tourOptions, setTourOptions] = useState<TourListItem[]>([]);
     const [note, setNote] = useState("");
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
@@ -124,6 +142,11 @@ export default function BookingCard({
     const [success, setSuccess] = useState(false);
     const [countdown, setCountdown] = useState(5);
     const [apiError, setApiError] = useState<string | null>(null);
+
+    const selectedTour = tourOptions.find((tour) => tour.slug === selectedTourSlug) ?? null;
+    const requestedTourSlug = searchParams.get("tour")?.trim() ?? "";
+    const requestedQuoteType = searchParams.get("quote")?.trim() ?? "";
+    const preferredTourSlug = (initialTourSlug?.trim() || requestedTourSlug).trim();
 
     useEffect(() => {
         if (mode !== "quote") return;
@@ -165,6 +188,54 @@ export default function BookingCard({
         if (mode !== "quote") return;
         setServiceType(initialServiceType);
     }, [initialServiceType, mode]);
+
+    useEffect(() => {
+        if (mode !== "quote") return;
+
+        let mounted = true;
+
+        const loadTours = async () => {
+            try {
+                const res = await fetch(`/api/tours/options?per_page=50`, {
+                    method: "GET",
+                    headers: { Accept: "application/json" },
+                });
+                if (!res.ok) throw new Error("Unable to load tours");
+
+                const json = (await res.json()) as ToursResponse;
+                if (!mounted) return;
+                setTourOptions(json.data ?? []);
+            } catch {
+                if (!mounted) return;
+                setTourOptions([]);
+            }
+        };
+
+        loadTours();
+
+        return () => {
+            mounted = false;
+        };
+    }, [mode]);
+
+    useEffect(() => {
+        if (mode !== "quote") return;
+
+        if (requestedQuoteType === "tour" || preferredTourSlug) {
+            setServiceType("tour");
+        }
+    }, [mode, requestedQuoteType, preferredTourSlug]);
+
+    useEffect(() => {
+        if (mode !== "quote") return;
+        if (!preferredTourSlug || tourOptions.length === 0) return;
+
+        const matched = tourOptions.find((tour) => tour.slug === preferredTourSlug);
+        if (matched) {
+            setSelectedTourSlug(matched.slug);
+            clearErr("tourDestination");
+        }
+    }, [mode, preferredTourSlug, tourOptions]);
 
     useEffect(() => {
         if (!pickupPoint || !dropoffPoint || mode !== "quote") {
@@ -209,7 +280,7 @@ export default function BookingCard({
                     setPickupTime("");
                     setDepartureDate(undefined);
                     setDepartureTime("");
-                    setTourDestination("");
+                    setSelectedTourSlug("");
                     setNote("");
                     setFullName("");
                     setEmail("");
@@ -253,7 +324,7 @@ export default function BookingCard({
             if (!departure) e.departure = "Select a departure date";
         } else {
             if (serviceType === "tour") {
-                if (!tourDestination.trim()) e.tourDestination = "Destination is required";
+                if (!selectedTourSlug.trim()) e.tourDestination = "Tour selection is required";
             } else {
                 if (!pickup.trim()) e.pickup = "Pickup location is required";
                 if (!dropoff.trim()) e.dropoff = "Drop-off location is required";
@@ -331,7 +402,7 @@ export default function BookingCard({
                 serviceType === "transfer" && pickupTime ? `Pickup time: ${pickupTime}` : null,
                 serviceType === "transfer" && departureDate ? `Departure date: ${departureDate.toISOString().split("T")[0]}` : null,
                 serviceType === "transfer" && departureTime ? `Departure time: ${departureTime}` : null,
-                serviceType === "tour" && tourDestination ? `Destination: ${tourDestination}` : null,
+                serviceType === "tour" && selectedTour ? `Tour: ${selectedTour.title}` : null,
                 note.trim() ? `Note: ${note.trim()}` : null,
             ]
                 .filter(Boolean)
@@ -345,7 +416,7 @@ export default function BookingCard({
                 transfer_trip_type: serviceType === "transfer" ? transferTripType : undefined,
                 use_vehicle_at_destination: serviceType === "transfer" ? useVehicleAtDestination === "yes" : undefined,
                 message: contextualDetails || undefined,
-                pickup_location: serviceType === "tour" ? tourDestination : pickup,
+                pickup_location: serviceType === "tour" ? selectedTour?.title : pickup,
                 dropoff_location: serviceType === "tour" ? undefined : dropoff,
                 trip_date: date ? date.toISOString().split("T")[0] : undefined,
                 passengers: passengers ? parseInt(passengers) : undefined,
@@ -554,19 +625,69 @@ export default function BookingCard({
                         )}
 
                         {serviceType === "tour" ? (
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Destination</label>
+                            <div className="rounded-2xl border border-gray-200 bg-gray-50/70 p-3 sm:p-4">
+                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Select Tour</label>
                                 <select
-                                    value={tourDestination}
-                                    onChange={(e) => { setTourDestination(e.target.value); clearErr("tourDestination"); }}
-                                    className={cn("w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm", errors.tourDestination && "border-red-400")}
+                                    value={selectedTourSlug}
+                                    onChange={(e) => { setSelectedTourSlug(e.target.value); clearErr("tourDestination"); }}
+                                    className={cn("w-full h-11 rounded-xl border border-gray-200 bg-white px-3 text-sm", errors.tourDestination && "border-red-400")}
                                 >
-                                    <option value="">Select destination</option>
-                                    {TOUR_DESTINATIONS.map((destination) => (
-                                        <option key={destination} value={destination}>{destination}</option>
+                                    <option value="">Select tour</option>
+                                    {tourOptions.map((tour) => (
+                                        <option key={tour.id} value={tour.slug}>{tour.title}</option>
                                     ))}
                                 </select>
-                                <FieldError msg={errors.tourDestination} />
+
+                                {tourOptions.length > 0 && (
+                                    <div className="mt-3">
+                                        <p className="mb-2 text-xs font-medium text-gray-500">Or choose visually</p>
+                                        <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 pr-1">
+                                            {tourOptions.map((tour) => {
+                                                const tourImage = storageUrl(tour.featured_image);
+                                                const isLocalBackendImage = Boolean(
+                                                    tourImage && (tourImage.startsWith("http://localhost:") || tourImage.startsWith("http://127.0.0.1:")),
+                                                );
+
+                                                return (
+                                                    <button
+                                                        key={tour.id}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setSelectedTourSlug(tour.slug);
+                                                            clearErr("tourDestination");
+                                                        }}
+                                                        className={cn(
+                                                            "min-w-[158px] snap-start overflow-hidden rounded-2xl border bg-white text-left transition-all",
+                                                            selectedTourSlug === tour.slug
+                                                                ? "border-blue-500 ring-2 ring-blue-100 shadow-sm"
+                                                                : "border-gray-200 hover:border-blue-300 hover:shadow-sm"
+                                                        )}
+                                                        aria-label={`Select ${tour.title}`}
+                                                    >
+                                                        <div className="relative h-24 w-full bg-slate-100">
+                                                            {tourImage ? (
+                                                                <Image
+                                                                    src={tourImage}
+                                                                    alt={tour.title}
+                                                                    fill
+                                                                    unoptimized={isLocalBackendImage}
+                                                                    className="object-cover"
+                                                                />
+                                                            ) : null}
+                                                        </div>
+                                                        <p className="h-[2.6rem] overflow-hidden px-3 py-2 text-xs font-medium leading-snug text-slate-700 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
+                                                            {tour.title}
+                                                        </p>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="mt-1">
+                                    <FieldError msg={errors.tourDestination} />
+                                </div>
                             </div>
                         ) : (
                             <>

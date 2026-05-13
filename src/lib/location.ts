@@ -9,8 +9,6 @@ export interface RouteMetrics {
     durationMinutes: number;
 }
 
-const GTA_VIEWBOX = "-80.2,44.3,-78.9,43.2";
-
 function toPoint(item: { lat: string; lon: string; display_name: string }): GeoPoint {
     return {
         lat: Number.parseFloat(item.lat),
@@ -19,23 +17,35 @@ function toPoint(item: { lat: string; lon: string; display_name: string }): GeoP
     };
 }
 
+function normalizeSearchText(value: string): string {
+    return value.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
 /** Fuzzy scoring for Google Maps-style matching */
 function scoreFuzzyMatch(label: string, query: string): number {
     const lowerLabel = label.toLowerCase();
     const lowerQuery = query.toLowerCase();
+    const normalizedLabel = normalizeSearchText(label);
+    const normalizedQuery = normalizeSearchText(query);
+
+    if (!normalizedQuery) return -1;
 
     // Exact match: highest score
-    if (lowerLabel === lowerQuery) return 1000;
+    if (lowerLabel === lowerQuery || normalizedLabel === normalizedQuery) return 1000;
 
     // Starts with: very high score
-    if (lowerLabel.startsWith(lowerQuery)) return 500 + (100 - label.length);
+    if (lowerLabel.startsWith(lowerQuery) || normalizedLabel.startsWith(normalizedQuery)) {
+        return 500 + (100 - label.length);
+    }
 
     // Contains as a word (space-preceded): high score
     if (lowerLabel.includes(` ${lowerQuery}`)) return 300 + (100 - label.length);
 
     // Substring match: base score, adjusted by position and length
-    if (lowerLabel.includes(lowerQuery)) {
-        const position = lowerLabel.indexOf(lowerQuery);
+    if (lowerLabel.includes(lowerQuery) || normalizedLabel.includes(normalizedQuery)) {
+        const position = lowerLabel.includes(lowerQuery)
+            ? lowerLabel.indexOf(lowerQuery)
+            : normalizedLabel.indexOf(normalizedQuery);
         // Earlier matches and shorter labels score higher
         return 100 + (1000 - position) - label.length;
     }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Users, CheckCircle2, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import QuoteModal from "@/components/QuoteModal";
 
 const vehicles = [
@@ -75,18 +76,30 @@ export default function FleetSection() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Header */}
-                    <div className="mb-12 flex flex-col gap-4">
-                        <span className="inline-flex w-fit items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-blue-700">
-                            Choose the Vehicle
-                        </span>
-                        <h2 className="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
-                            Modern Fleet for Every Group Size
-                        </h2>
-                        <p className="max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                            Our fleet of modern and well-maintained coach buses is perfect for any occasion
-                            including corporate events, school trips, weddings and family vacations. Go in
-                            style and enjoy an unrivalled travel experience at an affordable cost.
-                        </p>
+                    <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="flex flex-col gap-4">
+                            <span className="inline-flex w-fit items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-blue-700">
+                                Choose the Vehicle
+                            </span>
+                            <h2 className="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+                                Modern Fleet for Every Group Size
+                            </h2>
+                            <p className="max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                                Our fleet of modern and well-maintained coach buses is perfect for any occasion
+                                including corporate events, school trips, weddings and family vacations. Go in
+                                style and enjoy an unrivalled travel experience at an affordable cost.
+                            </p>
+                        </div>
+
+                        <Link
+                            href="/fleet"
+                            className="inline-flex w-fit items-center justify-between gap-3 pl-5 pr-2 py-2 rounded-full text-sm font-semibold text-white bg-blue-700 hover:bg-blue-800 transition-colors"
+                        >
+                            <span>View More</span>
+                            <span className="w-9 h-9 rounded-full bg-white flex items-center justify-center shrink-0">
+                                <ArrowRight className="h-4 w-4 text-blue-700 -rotate-45" />
+                            </span>
+                        </Link>
                     </div>
 
                     {/* Cards grid */}
