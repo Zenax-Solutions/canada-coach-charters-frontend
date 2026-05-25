@@ -26,6 +26,7 @@ const backendStoragePattern = (() => {
 })();
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     dangerouslyAllowLocalIP: true,
     remotePatterns: [

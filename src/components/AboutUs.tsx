@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { Award, ShieldCheck, Handshake, Phone, ArrowUpRight } from "lucide-react";
-import QuoteModal from "@/components/QuoteModal";
 
 const badges = [
     {
@@ -23,12 +22,9 @@ const badges = [
 ];
 
 export default function AboutUs() {
-    const [quoteOpen, setQuoteOpen] = useState(false);
-
     return (
-        <>
-            <section className="bg-white py-16 lg:py-20 px-2 sm:px-8 lg:px-10">
-                <div className="max-w-7xl mx-auto">
+        <section className="bg-white py-16 lg:py-20 px-2 sm:px-8 lg:px-10">
+            <div className="max-w-7xl mx-auto">
 
                     {/* Badge bar */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16 border-b border-gray-100 pb-12">
@@ -97,16 +93,15 @@ export default function AboutUs() {
 
                             {/* CTA row */}
                             <div className="flex flex-wrap items-center gap-4">
-                                <button
-                                    type="button"
-                                    onClick={() => setQuoteOpen(true)}
+                                <Link
+                                    href="/about"
                                     className="h-14 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm rounded-full flex items-center justify-between pl-6 pr-1.5 transition-colors gap-4"
                                 >
-                                    <span>Get a Quote</span>
+                                    <span>Learn More</span>
                                     <div className="bg-white rounded-full flex items-center justify-center shrink-0 shadow-md" style={{ width: "44px", height: "44px" }}>
                                         <ArrowUpRight className="w-4 h-4 text-blue-700" />
                                     </div>
-                                </button>
+                                </Link>
 
                                 <a
                                     href="tel:+16478464140"
@@ -125,15 +120,6 @@ export default function AboutUs() {
 
                     </div>
                 </div>
-            </section>
-
-            <QuoteModal
-                isOpen={quoteOpen}
-                onClose={() => setQuoteOpen(false)}
-                title="Get a Quote"
-                serviceType="charter"
-                context="Quote request from About Us"
-            />
-        </>
+        </section>
     );
 }

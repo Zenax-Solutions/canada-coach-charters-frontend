@@ -24,6 +24,7 @@ const gtaAreas = [
 
 const navLinks = [
     { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
     { label: "Services", href: "/services" },
     { label: "Fleet", href: "/fleet" },
     { label: "Transfers", href: "/transfers" },
