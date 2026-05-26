@@ -101,6 +101,18 @@ export default function Home() {
         <Hero />
       </div>
       <AboutUs />
+      <section className="px-2 py-10 sm:px-8 lg:px-10">
+        <div className="mx-auto max-w-7xl rounded-3xl border border-blue-100 bg-blue-50/70 p-6 sm:p-8">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">GTA Group Services</h2>
+          <div className="mt-4 space-y-2 text-sm leading-relaxed text-slate-700 sm:text-base">
+            <p>we do private schools in GTA</p>
+            <p>Churches in GTA</p>
+            <p>in the approved list for</p>
+            <p>Toronto District School Board</p>
+            <p>York Region District School Board</p>
+          </div>
+        </div>
+      </section>
       <CoreServices />
       <FleetSection />
       <ToursSection />
