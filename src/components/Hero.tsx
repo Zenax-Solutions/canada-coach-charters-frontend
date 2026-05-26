@@ -508,7 +508,7 @@ export default function Hero() {
                         </div>
 
                         {/* Card body */}
-                        <div className="bg-white shadow-2xl p-6 relative z-0 rounded-b-2xl rounded-tr-2xl">
+                        <div className="bg-white shadow-2xl p-6 relative z-0 rounded-b-2xl rounded-tr-2xl min-h-[500px] max-h-[500px] flex flex-col">
                             {/* Card title */}
                             <div className="flex items-center justify-between mb-4">
                                 <p className="text-base font-bold text-gray-800">Plan Your Trip in Minutes</p>
@@ -520,7 +520,7 @@ export default function Hero() {
                                 </div>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="space-y-3">
+                            <form onSubmit={handleSubmit} className="space-y-3 min-h-0 flex-1 overflow-y-auto pr-1">
 
                                 {serviceType === "transfer" && (
                                     <>
