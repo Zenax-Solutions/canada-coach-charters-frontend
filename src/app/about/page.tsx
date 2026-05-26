@@ -8,8 +8,6 @@ import {
     CheckCircle2,
     Clock3,
     Globe,
-    GraduationCap,
-    Plane,
     ShieldCheck,
     Star,
     Users,
@@ -319,9 +317,11 @@ export default function AboutPage() {
             <section className="py-14 lg:py-16 px-2 sm:px-8 lg:px-10">
                 <div className="max-w-7xl mx-auto">
                     <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-6">Serving Toronto &amp; the Greater Toronto Area</h2>
+                    <p className="text-sm text-slate-600 mb-4">Explore our primary service zones across the GTA.</p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
                         {serviceAreas.map((area) => (
-                            <div key={area} className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 text-center">
+                            <div key={area} className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 flex items-center justify-center gap-2 text-center">
+                                <MapPin className="w-4 h-4 text-blue-700 shrink-0" />
                                 {area}
                             </div>
                         ))}
@@ -382,9 +382,9 @@ export default function AboutPage() {
                                 <div className="rounded-lg border border-slate-200 bg-slate-50 py-3">Schools</div>
                                 <div className="rounded-lg border border-slate-200 bg-slate-50 py-3">Sports Teams</div>
                             </div>
-                            <blockquote className="text-sm text-slate-700 mb-2">"Excellent communication and very professional coordination for our event transportation."</blockquote>
-                            <blockquote className="text-sm text-slate-700 mb-2">"On-time pickup, clean vehicle, and smooth airport transfer experience."</blockquote>
-                            <blockquote className="text-sm text-slate-700">"Reliable planning support for large group movement across Ontario."</blockquote>
+                            <blockquote className="text-sm text-slate-700 mb-2">&ldquo;Excellent communication and very professional coordination for our event transportation.&rdquo;</blockquote>
+                            <blockquote className="text-sm text-slate-700 mb-2">&ldquo;On-time pickup, clean vehicle, and smooth airport transfer experience.&rdquo;</blockquote>
+                            <blockquote className="text-sm text-slate-700">&ldquo;Reliable planning support for large group movement across Ontario.&rdquo;</blockquote>
                         </div>
                     </div>
                 </div>
