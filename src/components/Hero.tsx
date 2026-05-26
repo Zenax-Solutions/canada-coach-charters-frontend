@@ -306,6 +306,41 @@ export default function Hero() {
         };
     }, [pickupPoint, dropoffPoint, serviceType]);
 
+    useEffect(() => {
+        if (!submitted) return;
+
+        const timer = window.setTimeout(() => {
+            setSubmitted(false);
+            setFormError(null);
+            setPickup("");
+            setDropoff("");
+            setPickupPoint(null);
+            setDropoffPoint(null);
+            setPickupSuggestions([]);
+            setDropoffSuggestions([]);
+            setPickupActiveIndex(-1);
+            setDropoffActiveIndex(-1);
+            setTripDate(undefined);
+            setPassengers("");
+            setTransferOption("");
+            setTransferTripType("round-trip");
+            setUseVehicleAtDestination("yes");
+            setPickupTime("");
+            setDepartureDate(undefined);
+            setDepartureTime("");
+            setSelectedTourSlug("");
+            setNote("");
+            setFullName("");
+            setEmail("");
+            setMobile("");
+            setRouteMetrics(null);
+            setDistanceLoading(false);
+            setServiceType("charter");
+        }, 5000);
+
+        return () => window.clearTimeout(timer);
+    }, [submitted]);
+
     const selectPickupSuggestion = (suggestion: GeoPoint) => {
         setPickup(suggestion.label);
         setPickupPoint(suggestion);
