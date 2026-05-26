@@ -57,21 +57,28 @@ function scoreFuzzyMatch(label: string, query: string): number {
 export async function searchGtaLocations(query: string): Promise<GeoPoint[]> {
     if (!query.trim() || query.trim().length < 2) return [];
 
-    const res = await fetch(`/api/location/search?q=${encodeURIComponent(query)}`);
-    if (!res.ok) return [];
+    try {
+        const res = await fetch(`/api/location/search?q=${encodeURIComponent(query)}`);
+        if (!res.ok) return [];
 
-    const data = (await res.json()) as Array<{ lat: string; lon: string; display_name: string }>;
+        const raw = (await res.json()) as unknown;
+        if (!Array.isArray(raw)) return [];
 
-    return data
-        .map(toPoint)
-        .filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lon))
-        // Score and filter by fuzzy match
-        .map((p) => ({ ...p, score: scoreFuzzyMatch(p.label, query) }))
-        .filter((p) => p.score >= 0)
-        // Sort by score descending
-        .sort((a, b) => b.score - a.score)
-        // Remove score property from result
-        .map(({ score, ...p }) => p);
+        const data = raw as Array<{ lat: string; lon: string; display_name: string }>;
+
+        return data
+            .map(toPoint)
+            .filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lon))
+            // Score and filter by fuzzy match
+            .map((p) => ({ ...p, score: scoreFuzzyMatch(p.label, query) }))
+            .filter((p) => p.score >= 0)
+            // Sort by score descending
+            .sort((a, b) => b.score - a.score)
+            // Remove score property from result
+            .map(({ score, ...p }) => p);
+    } catch {
+        return [];
+    }
 }
 
 export async function geocodeFirstGtaLocation(query: string): Promise<GeoPoint | null> {

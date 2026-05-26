@@ -12,6 +12,7 @@ import FaqSection from "@/components/FaqSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import QuoteSection from "@/components/QuoteSection";
 import Footer from "@/components/Footer";
+import { School, Church, BadgeCheck } from "lucide-react";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://canadacoachcharters.ca";
 
@@ -101,18 +102,6 @@ export default function Home() {
         <Hero />
       </div>
       <AboutUs />
-      <section className="px-2 py-10 sm:px-8 lg:px-10">
-        <div className="mx-auto max-w-7xl rounded-3xl border border-blue-100 bg-blue-50/70 p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">GTA Group Services</h2>
-          <div className="mt-4 space-y-2 text-sm leading-relaxed text-slate-700 sm:text-base">
-            <p>we do private schools in GTA</p>
-            <p>Churches in GTA</p>
-            <p>in the approved list for</p>
-            <p>Toronto District School Board</p>
-            <p>York Region District School Board</p>
-          </div>
-        </div>
-      </section>
       <CoreServices />
       <FleetSection />
       <ToursSection />
@@ -121,6 +110,51 @@ export default function Home() {
       <HowItWorks />
       <FaqSection />
       <TestimonialsSection />
+      <section className="relative overflow-hidden px-2 py-12 sm:px-8 lg:px-10 lg:py-16">
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 bg-gradient-to-b from-blue-100/80 via-cyan-50/35 to-transparent" />
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-blue-100/80 bg-gradient-to-br from-white via-blue-50/55 to-cyan-50/70 p-6 shadow-[0_28px_70px_-48px_rgba(14,116,144,0.65)] sm:p-8 lg:p-10">
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-8">
+            <div className="rounded-3xl border border-white/70 bg-white/85 p-5 backdrop-blur-sm sm:p-6">
+              <p className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-blue-700">
+                GTA Group Services
+              </p>
+              <h2 className="mt-3 text-2xl font-bold leading-tight text-slate-900 sm:text-3xl">
+                Trusted Transportation for Schools and Churches
+              </h2>
+
+              <div className="mt-6 space-y-3">
+                <div className="flex items-start gap-3 rounded-2xl border border-blue-100 bg-blue-50/75 p-3.5">
+                  <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white">
+                    <School className="h-4 w-4" />
+                  </span>
+                  <p className="text-sm font-medium text-slate-700 sm:text-base">We do private schools in GTA</p>
+                </div>
+
+                <div className="flex items-start gap-3 rounded-2xl border border-cyan-100 bg-cyan-50/75 p-3.5">
+                  <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-cyan-600 text-white">
+                    <Church className="h-4 w-4" />
+                  </span>
+                  <p className="text-sm font-medium text-slate-700 sm:text-base">Churches in GTA</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">In the approved list for</p>
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2.5">
+                  <BadgeCheck className="h-4 w-4 shrink-0 text-emerald-600" />
+                  <p className="text-sm font-semibold text-slate-800">Toronto District School Board</p>
+                </div>
+                <div className="flex items-center gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2.5">
+                  <BadgeCheck className="h-4 w-4 shrink-0 text-emerald-600" />
+                  <p className="text-sm font-semibold text-slate-800">York Region District School Board</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <QuoteSection />
       <Footer />
     </div>

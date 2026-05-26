@@ -199,19 +199,30 @@ export default function Hero() {
             setPickupActiveIndex(-1);
             return;
         }
-        if (text.length < 3 || pickupPoint?.label === pickup) {
+        if (text.length < 2 || pickupPoint?.label === pickup) {
             setPickupSuggestions([]);
             setPickupActiveIndex(-1);
             return;
         }
 
+        let active = true;
         const timer = window.setTimeout(async () => {
-            const results = await searchGtaLocations(text);
-            setPickupSuggestions(results);
-            setPickupActiveIndex(results.length > 0 ? 0 : -1);
+            try {
+                const results = await searchGtaLocations(text);
+                if (!active) return;
+                setPickupSuggestions(results);
+                setPickupActiveIndex(results.length > 0 ? 0 : -1);
+            } catch {
+                if (!active) return;
+                setPickupSuggestions([]);
+                setPickupActiveIndex(-1);
+            }
         }, 350);
 
-        return () => window.clearTimeout(timer);
+        return () => {
+            active = false;
+            window.clearTimeout(timer);
+        };
     }, [pickup, pickupPoint, serviceType]);
 
     useEffect(() => {
@@ -221,19 +232,30 @@ export default function Hero() {
             setDropoffActiveIndex(-1);
             return;
         }
-        if (text.length < 3 || dropoffPoint?.label === dropoff) {
+        if (text.length < 2 || dropoffPoint?.label === dropoff) {
             setDropoffSuggestions([]);
             setDropoffActiveIndex(-1);
             return;
         }
 
+        let active = true;
         const timer = window.setTimeout(async () => {
-            const results = await searchGtaLocations(text);
-            setDropoffSuggestions(results);
-            setDropoffActiveIndex(results.length > 0 ? 0 : -1);
+            try {
+                const results = await searchGtaLocations(text);
+                if (!active) return;
+                setDropoffSuggestions(results);
+                setDropoffActiveIndex(results.length > 0 ? 0 : -1);
+            } catch {
+                if (!active) return;
+                setDropoffSuggestions([]);
+                setDropoffActiveIndex(-1);
+            }
         }, 350);
 
-        return () => window.clearTimeout(timer);
+        return () => {
+            active = false;
+            window.clearTimeout(timer);
+        };
     }, [dropoff, dropoffPoint, serviceType]);
 
     useEffect(() => {
