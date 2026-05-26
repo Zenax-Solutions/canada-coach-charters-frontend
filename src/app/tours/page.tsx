@@ -178,6 +178,8 @@ export default async function ToursPage({
                                     imgSrc &&
                                     (imgSrc.startsWith("http://localhost:") || imgSrc.startsWith("http://127.0.0.1:")),
                                 );
+                                const numericPrice = Number(tour.price_per_person);
+                                const hasVisiblePrice = Number.isFinite(numericPrice) && numericPrice > 0;
 
                                 return (
                                     <article
@@ -228,10 +230,12 @@ export default async function ToursPage({
                                                 </p>
                                             </div>
 
-                                            <div className="flex items-center justify-between gap-4">
-                                                <p className="text-sm font-semibold text-slate-900">
-                                                    From <span className="text-blue-700">USD {Number(tour.price_per_person).toLocaleString()}</span>
-                                                </p>
+                                            <div className={`flex items-center gap-4 ${hasVisiblePrice ? "justify-between" : "justify-end"}`}>
+                                                {hasVisiblePrice && (
+                                                    <p className="text-sm font-semibold text-slate-900">
+                                                        From <span className="text-blue-700">USD {numericPrice.toLocaleString()}</span>
+                                                    </p>
+                                                )}
 
                                                 <Link
                                                     href={`/tours/${tour.slug}`}

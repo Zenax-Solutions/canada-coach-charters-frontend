@@ -162,6 +162,8 @@ export default async function TourDetailPage({ params }: { params: Promise<{ slu
     const isLocalBackendImage = Boolean(
         imgSrc && (imgSrc.startsWith("http://localhost:") || imgSrc.startsWith("http://127.0.0.1:")),
     );
+    const numericPrice = Number(tour.price_per_person);
+    const hasVisiblePrice = Number.isFinite(numericPrice) && numericPrice > 0;
 
     const tourSchema = {
         "@context": "https://schema.org",
@@ -175,13 +177,17 @@ export default async function TourDetailPage({ params }: { params: Promise<{ slu
             name: `Day ${day.day_number}: ${day.title}`,
             description: day.description,
         })),
-        offers: {
-            "@type": "Offer",
-            priceCurrency: "USD",
-            price: Number(tour.price_per_person),
-            availability: "https://schema.org/InStock",
-            url: `${siteUrl}/tours/${tour.slug}`,
-        },
+        ...(hasVisiblePrice
+            ? {
+                offers: {
+                    "@type": "Offer",
+                    priceCurrency: "USD",
+                    price: numericPrice,
+                    availability: "https://schema.org/InStock",
+                    url: `${siteUrl}/tours/${tour.slug}`,
+                },
+            }
+            : {}),
         provider: {
             "@type": "Organization",
             name: "Canada Coach Charters",
@@ -350,9 +356,13 @@ export default async function TourDetailPage({ params }: { params: Promise<{ slu
 
                         <aside className="space-y-6">
                             <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 sm:p-6">
-                                <p className="text-xs font-semibold text-blue-700">Starting from</p>
-                                <p className="mt-1 text-3xl font-bold text-blue-900">USD {Number(tour.price_per_person).toLocaleString()}</p>
-                                <p className="mt-1 text-xs text-blue-700">Per person (indicative)</p>
+                                {hasVisiblePrice && (
+                                    <>
+                                        <p className="text-xs font-semibold text-blue-700">Starting from</p>
+                                        <p className="mt-1 text-3xl font-bold text-blue-900">USD {numericPrice.toLocaleString()}</p>
+                                        <p className="mt-1 text-xs text-blue-700">Per person (indicative)</p>
+                                    </>
+                                )}
                                 <TourRequestModalButton tourSlug={tour.slug} tourTitle={tour.title} />
                             </div>
 

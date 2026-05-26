@@ -36,7 +36,11 @@ export default async function ToursSection() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {tours.map((tour) => (
+                    {tours.map((tour) => {
+                        const numericPrice = Number(tour.price_per_person);
+                        const hasVisiblePrice = Number.isFinite(numericPrice) && numericPrice > 0;
+
+                        return (
                         <article
                             key={tour.id}
                             className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_45px_-32px_rgba(15,23,42,0.4)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_26px_52px_-28px_rgba(37,99,235,0.28)]"
@@ -93,10 +97,12 @@ export default async function ToursSection() {
                                     </p>
                                 </div>
 
-                                <div className="flex items-center justify-between gap-4">
-                                    <p className="text-sm font-semibold text-slate-900">
-                                        From <span className="text-blue-700">USD {Number(tour.price_per_person).toLocaleString()}</span>
-                                    </p>
+                                <div className={`flex items-center gap-4 ${hasVisiblePrice ? "justify-between" : "justify-end"}`}>
+                                    {hasVisiblePrice && (
+                                        <p className="text-sm font-semibold text-slate-900">
+                                            From <span className="text-blue-700">USD {numericPrice.toLocaleString()}</span>
+                                        </p>
+                                    )}
 
                                     <Link
                                         href={`/tours/${tour.slug}`}
@@ -110,7 +116,8 @@ export default async function ToursSection() {
                                 </div>
                             </div>
                         </article>
-                    ))}
+                    );
+                    })}
 
                     {tours.length === 0 && (
                         <div className="col-span-full rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
