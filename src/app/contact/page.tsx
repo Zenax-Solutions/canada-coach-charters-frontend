@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import QuoteSection from "@/components/QuoteSection";
 import Link from "next/link";
 import {
     ArrowRight,
@@ -141,45 +142,29 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            <div id="quick-quote" className="rounded-3xl border border-white/20 bg-white/95 text-slate-900 p-6 sm:p-8 shadow-2xl">
+                            <div className="rounded-3xl border border-white/20 bg-white/95 text-slate-900 p-6 sm:p-8 shadow-2xl">
                                 <span className="inline-block text-xs font-semibold text-blue-600 border border-blue-200 bg-blue-50 rounded-full px-4 py-1.5 mb-4">
                                     Plan Your Trip in Minutes
                                 </span>
-                                <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-2">Quick Quote Form</h2>
+                                <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-2">Quick Quote</h2>
                                 <p className="text-sm text-slate-600 mb-6">
-                                    Tell us about your transportation needs and our team will get back to you with pricing, vehicle options, and availability.
+                                    Use our global quote form for charter, transfer, and tour requests. It includes all required fields and instant location suggestions.
                                 </p>
 
-                                <form className="space-y-4">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <input className="h-11 rounded-xl border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Pickup Location" />
-                                        <input className="h-11 rounded-xl border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Destination" />
-                                        <input className="h-11 rounded-xl border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="date" />
-                                        <input className="h-11 rounded-xl border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="date" />
-                                        <input className="h-11 rounded-xl border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="number" min="1" placeholder="Passenger Count" />
-                                        <select className="h-11 rounded-xl border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" defaultValue="">
-                                            <option value="" disabled>
-                                                Service Type
-                                            </option>
-                                            <option>Charter</option>
-                                            <option>Airport Transfer</option>
-                                            <option>Tour</option>
-                                            <option>Event Transportation</option>
-                                        </select>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <input className="h-11 rounded-xl border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Full Name" />
-                                        <input className="h-11 rounded-xl border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" type="email" placeholder="Email Address" />
-                                        <input className="h-11 rounded-xl border border-slate-300 px-3 text-sm sm:col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500" type="tel" placeholder="Phone Number" />
-                                    </div>
-
-                                    <textarea className="w-full min-h-24 rounded-xl border border-slate-300 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Additional Notes" />
-
-                                    <button type="button" className="w-full h-11 rounded-xl bg-blue-700 text-white text-sm font-semibold hover:bg-blue-800 transition-colors">
-                                        Get My Quote
-                                    </button>
-                                </form>
+                                <div className="space-y-3">
+                                    <a
+                                        href="#quick-quote"
+                                        className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-blue-700 text-white text-sm font-semibold hover:bg-blue-800 transition-colors"
+                                    >
+                                        Open Global Quote Form
+                                    </a>
+                                    <a
+                                        href="tel:+16478464140"
+                                        className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-slate-300 text-slate-800 text-sm font-semibold hover:bg-slate-100 transition-colors"
+                                    >
+                                        Call for Immediate Assistance
+                                    </a>
+                                </div>
 
                                 <p className="text-xs text-slate-500 mt-4">
                                     No hidden fees. Fast responses. Flexible transportation solutions for groups of all sizes.
@@ -463,6 +448,8 @@ export default function ContactPage() {
                     </div>
                 </div>
             </section>
+
+            <QuoteSection />
 
             <Footer />
         </div>
