@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import QuoteSection from "@/components/QuoteSection";
+import BookingCard from "@/components/BookingCard";
 import Link from "next/link";
 import {
     ArrowRight,
@@ -142,33 +142,8 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            <div className="rounded-3xl border border-white/20 bg-white/95 text-slate-900 p-6 sm:p-8 shadow-2xl">
-                                <span className="inline-block text-xs font-semibold text-blue-600 border border-blue-200 bg-blue-50 rounded-full px-4 py-1.5 mb-4">
-                                    Plan Your Trip in Minutes
-                                </span>
-                                <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-2">Quick Quote</h2>
-                                <p className="text-sm text-slate-600 mb-6">
-                                    Use our global quote form for charter, transfer, and tour requests. It includes all required fields and instant location suggestions.
-                                </p>
-
-                                <div className="space-y-3">
-                                    <a
-                                        href="#quick-quote"
-                                        className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-blue-700 text-white text-sm font-semibold hover:bg-blue-800 transition-colors"
-                                    >
-                                        Open Global Quote Form
-                                    </a>
-                                    <a
-                                        href="tel:+16478464140"
-                                        className="inline-flex h-11 w-full items-center justify-center rounded-xl border border-slate-300 text-slate-800 text-sm font-semibold hover:bg-slate-100 transition-colors"
-                                    >
-                                        Call for Immediate Assistance
-                                    </a>
-                                </div>
-
-                                <p className="text-xs text-slate-500 mt-4">
-                                    No hidden fees. Fast responses. Flexible transportation solutions for groups of all sizes.
-                                </p>
+                            <div id="quick-quote" className="w-full lg:max-w-[560px] lg:justify-self-end">
+                                <BookingCard mode="quote" variant="hero" />
                             </div>
                         </div>
                     </div>
@@ -448,8 +423,6 @@ export default function ContactPage() {
                     </div>
                 </div>
             </section>
-
-            <QuoteSection />
 
             <Footer />
         </div>
