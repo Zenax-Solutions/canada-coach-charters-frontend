@@ -9,12 +9,32 @@ import { Calendar } from "@/components/ui/calendar";
 import QuoteModal from "@/components/QuoteModal";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { submitQuote } from "@/lib/api";
+import { storageUrl, submitQuote } from "@/lib/api";
 import { geocodeFirstGtaLocation, getDrivingRouteMetrics, searchGtaLocations, type GeoPoint, type RouteMetrics } from "@/lib/location";
 
 const flipWords = ["Travel", "Adventure", "Discovery", "Freedom"];
 
 type ServiceType = "charter" | "transfer" | "tour";
+type TransferTripType = "round-trip" | "one-way";
+
+const TRANSFER_OPTIONS = [
+    "Airport Transfer",
+    "Hotel Transfer",
+    "City Transfer",
+    "Intercity Transfer",
+    "Private Transfer",
+];
+
+interface TourListItem {
+    id: number;
+    title: string;
+    slug: string;
+    featured_image: string | null;
+}
+
+interface ToursResponse {
+    data: TourListItem[];
+}
 
 export default function Hero() {
     const [videoFailed, setVideoFailed] = useState(false);
@@ -33,6 +53,15 @@ export default function Hero() {
     const [routeMetrics, setRouteMetrics] = useState<RouteMetrics | null>(null);
     const [distanceLoading, setDistanceLoading] = useState(false);
     const [passengers, setPassengers] = useState("");
+    const [transferOption, setTransferOption] = useState("");
+    const [transferTripType, setTransferTripType] = useState<TransferTripType>("round-trip");
+    const [useVehicleAtDestination, setUseVehicleAtDestination] = useState<"yes" | "no">("yes");
+    const [pickupTime, setPickupTime] = useState("");
+    const [departureDate, setDepartureDate] = useState<Date | undefined>();
+    const [departureTime, setDepartureTime] = useState("");
+    const [selectedTourSlug, setSelectedTourSlug] = useState("");
+    const [tourOptions, setTourOptions] = useState<TourListItem[]>([]);
+    const [note, setNote] = useState("");
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [mobile, setMobile] = useState("");
@@ -40,38 +69,81 @@ export default function Hero() {
     const [submitted, setSubmitted] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
     const [quoteOpen, setQuoteOpen] = useState(false);
+    const selectedTour = tourOptions.find((tour) => tour.slug === selectedTourSlug) ?? null;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (serviceType === "tour" && !selectedTourSlug.trim()) { setFormError("Please select a tour."); return; }
+
+        if (serviceType !== "tour") {
+            if (!pickup.trim()) { setFormError("Please enter pickup location."); return; }
+            if (!dropoff.trim()) { setFormError("Please enter drop-off location."); return; }
+        }
+
+        if (!tripDate) {
+            setFormError(serviceType === "transfer" ? "Please select pickup date." : "Please select a date.");
+            return;
+        }
+
+        if (serviceType === "transfer" && !transferOption.trim()) { setFormError("Please select transfer service."); return; }
+        if (serviceType === "transfer" && !pickupTime.trim()) { setFormError("Please select pickup time."); return; }
+        if (serviceType === "transfer" && transferTripType === "round-trip" && !departureDate) { setFormError("Please select departure date."); return; }
+        if (serviceType === "transfer" && transferTripType === "round-trip" && !departureTime.trim()) { setFormError("Please select departure time."); return; }
+
+        if (!passengers || parseInt(passengers, 10) < 1) { setFormError("Please enter number of passengers."); return; }
         if (!fullName.trim()) { setFormError("Please enter your name."); return; }
         if (!email.trim()) { setFormError("Please enter your email."); return; }
+
         setSubmitting(true);
         setFormError(null);
         try {
             let resolvedPickup = pickupPoint;
             let resolvedDropoff = dropoffPoint;
 
-            if (!resolvedPickup && pickup.trim()) {
-                resolvedPickup = await geocodeFirstGtaLocation(pickup);
-            }
-            if (!resolvedDropoff && dropoff.trim()) {
-                resolvedDropoff = await geocodeFirstGtaLocation(dropoff);
+            if (serviceType !== "tour") {
+                if (!resolvedPickup && pickup.trim()) {
+                    resolvedPickup = await geocodeFirstGtaLocation(pickup);
+                }
+                if (!resolvedDropoff && dropoff.trim()) {
+                    resolvedDropoff = await geocodeFirstGtaLocation(dropoff);
+                }
             }
 
             const route =
-                resolvedPickup && resolvedDropoff
+                serviceType !== "tour" && resolvedPickup && resolvedDropoff
                     ? await getDrivingRouteMetrics(resolvedPickup, resolvedDropoff)
                     : null;
+
+            const contextualDetails = [
+                serviceType === "transfer" && transferOption ? `Transfer service: ${transferOption}` : null,
+                serviceType === "transfer" ? `Trip type: ${transferTripType === "round-trip" ? "Round Trip" : "One Way"}` : null,
+                serviceType === "transfer" ? `Use vehicle at destination: ${useVehicleAtDestination === "yes" ? "Yes" : "No"}` : null,
+                serviceType === "transfer" && pickupTime ? `Pickup time: ${pickupTime}` : null,
+                serviceType === "transfer" && departureDate ? `Departure date: ${format(departureDate, "yyyy-MM-dd")}` : null,
+                serviceType === "transfer" && departureTime ? `Departure time: ${departureTime}` : null,
+                serviceType === "tour" && selectedTour ? `Tour: ${selectedTour.title}` : null,
+                note.trim() ? `Note: ${note.trim()}` : null,
+            ]
+                .filter(Boolean)
+                .join("\n");
 
             await submitQuote({
                 name: fullName,
                 email,
                 phone: mobile || undefined,
                 service_type: serviceType,
-                pickup_location: pickup,
-                dropoff_location: dropoff,
+                transfer_trip_type: serviceType === "transfer" ? transferTripType : undefined,
+                use_vehicle_at_destination: serviceType === "transfer" ? useVehicleAtDestination === "yes" : undefined,
+                message: contextualDetails || undefined,
+                pickup_location: serviceType === "tour" ? selectedTour?.title : pickup,
+                dropoff_location: serviceType === "tour" ? undefined : dropoff,
                 trip_date: tripDate ? format(tripDate, "yyyy-MM-dd") : undefined,
                 passengers: passengers ? parseInt(passengers) : undefined,
+                pickup_time: serviceType === "transfer" ? pickupTime : undefined,
+                departure_date: serviceType === "transfer" && departureDate ? format(departureDate, "yyyy-MM-dd") : undefined,
+                departure_time: serviceType === "transfer" ? departureTime : undefined,
+                transfer_option: serviceType === "transfer" ? transferOption : undefined,
                 pickup_lat: resolvedPickup?.lat,
                 pickup_lng: resolvedPickup?.lon,
                 dropoff_lat: resolvedDropoff?.lat,
@@ -90,6 +162,21 @@ export default function Hero() {
     const handleServiceChange = (key: ServiceType) => {
         setIsLoading(true);
         setServiceType(key);
+
+        setFormError(null);
+        if (key !== "transfer") {
+            setTransferOption("");
+            setTransferTripType("round-trip");
+            setUseVehicleAtDestination("yes");
+            setPickupTime("");
+            setDepartureDate(undefined);
+            setDepartureTime("");
+        }
+        if (key !== "tour") {
+            setSelectedTourSlug("");
+            setNote("");
+        }
+
         setTimeout(() => setIsLoading(false), 600);
     };
     const [wordPhase, setWordPhase] = useState<"in" | "out">("in");
@@ -107,6 +194,11 @@ export default function Hero() {
 
     useEffect(() => {
         const text = pickup.trim();
+        if (serviceType === "tour") {
+            setPickupSuggestions([]);
+            setPickupActiveIndex(-1);
+            return;
+        }
         if (text.length < 3 || pickupPoint?.label === pickup) {
             setPickupSuggestions([]);
             setPickupActiveIndex(-1);
@@ -120,10 +212,15 @@ export default function Hero() {
         }, 350);
 
         return () => window.clearTimeout(timer);
-    }, [pickup, pickupPoint]);
+    }, [pickup, pickupPoint, serviceType]);
 
     useEffect(() => {
         const text = dropoff.trim();
+        if (serviceType === "tour") {
+            setDropoffSuggestions([]);
+            setDropoffActiveIndex(-1);
+            return;
+        }
         if (text.length < 3 || dropoffPoint?.label === dropoff) {
             setDropoffSuggestions([]);
             setDropoffActiveIndex(-1);
@@ -137,10 +234,37 @@ export default function Hero() {
         }, 350);
 
         return () => window.clearTimeout(timer);
-    }, [dropoff, dropoffPoint]);
+    }, [dropoff, dropoffPoint, serviceType]);
 
     useEffect(() => {
-        if (!pickupPoint || !dropoffPoint) {
+        let mounted = true;
+
+        const loadTours = async () => {
+            try {
+                const res = await fetch("/api/tours/options?per_page=50", {
+                    method: "GET",
+                    headers: { Accept: "application/json" },
+                });
+                if (!res.ok) throw new Error("Unable to load tours");
+
+                const json = (await res.json()) as ToursResponse;
+                if (!mounted) return;
+                setTourOptions(json.data ?? []);
+            } catch {
+                if (!mounted) return;
+                setTourOptions([]);
+            }
+        };
+
+        loadTours();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (serviceType === "tour" || !pickupPoint || !dropoffPoint) {
             setRouteMetrics(null);
             return;
         }
@@ -158,7 +282,7 @@ export default function Hero() {
         return () => {
             mounted = false;
         };
-    }, [pickupPoint, dropoffPoint]);
+    }, [pickupPoint, dropoffPoint, serviceType]);
 
     const selectPickupSuggestion = (suggestion: GeoPoint) => {
         setPickup(suggestion.label);
@@ -341,6 +465,91 @@ export default function Hero() {
 
                             <form onSubmit={handleSubmit} className="space-y-3">
 
+                                {serviceType === "transfer" && (
+                                    <>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Trip Type</label>
+                                                <select
+                                                    value={transferTripType}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value as TransferTripType;
+                                                        setTransferTripType(value);
+                                                        if (value === "one-way") {
+                                                            setDepartureDate(undefined);
+                                                            setDepartureTime("");
+                                                        }
+                                                    }}
+                                                    className="w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm focus:border-blue-500 focus:ring-blue-500"
+                                                >
+                                                    <option value="round-trip">Round Trip</option>
+                                                    <option value="one-way">One Way</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Use Vehicle at Destination</label>
+                                                <select
+                                                    value={useVehicleAtDestination}
+                                                    onChange={(e) => setUseVehicleAtDestination(e.target.value as "yes" | "no")}
+                                                    className="w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm focus:border-blue-500 focus:ring-blue-500"
+                                                >
+                                                    <option value="yes">Yes</option>
+                                                    <option value="no">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1.5">Select Service</label>
+                                            <select
+                                                value={transferOption}
+                                                onChange={(e) => setTransferOption(e.target.value)}
+                                                className="w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm focus:border-blue-500 focus:ring-blue-500"
+                                            >
+                                                <option value="">Select transfer service</option>
+                                                {TRANSFER_OPTIONS.map((option) => (
+                                                    <option key={option} value={option}>{option}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </>
+                                )}
+
+                                {serviceType === "tour" ? (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                            Select Tour
+                                        </label>
+                                        <select
+                                            value={selectedTourSlug}
+                                            onChange={(e) => setSelectedTourSlug(e.target.value)}
+                                            className="w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm focus:border-blue-500 focus:ring-blue-500"
+                                        >
+                                            <option value="">Select tour</option>
+                                            {tourOptions.map((tour) => (
+                                                <option key={tour.id} value={tour.slug}>{tour.title}</option>
+                                            ))}
+                                        </select>
+
+                                        {selectedTour && (
+                                            <div className="mt-3 rounded-xl border border-gray-200 bg-gray-50/80 p-2.5 flex items-center gap-3">
+                                                <div className="relative h-12 w-16 overflow-hidden rounded-lg bg-slate-200 shrink-0">
+                                                    {selectedTour.featured_image && storageUrl(selectedTour.featured_image) && (
+                                                        <Image
+                                                            src={storageUrl(selectedTour.featured_image) as string}
+                                                            alt={selectedTour.title}
+                                                            fill
+                                                            unoptimized
+                                                            className="object-cover"
+                                                        />
+                                                    )}
+                                                </div>
+                                                <p className="text-xs font-medium text-slate-700 leading-snug line-clamp-2">{selectedTour.title}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+
                                 {/* Pickup & Drop-off */}
                                 <div className="flex flex-col lg:flex-row gap-3">
                                     <div className="flex-1">
@@ -406,12 +615,12 @@ export default function Hero() {
 
                                     <div className="flex-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Drop-off
+                                            {serviceType === "transfer" ? "Destination" : "Drop-off"}
                                         </label>
                                         <div className="relative">
                                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
                                             <Input
-                                                placeholder="Enter drop-off location"
+                                                placeholder={serviceType === "transfer" ? "Enter destination location" : "Enter drop-off location"}
                                                 value={dropoff}
                                                 onChange={e => {
                                                     setDropoff(e.target.value);
@@ -465,12 +674,13 @@ export default function Hero() {
                                         </div>
                                     </div>
                                 </div>
+                                )}
 
                                 {/* Date & Passengers */}
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <div className="flex-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Date
+                                            {serviceType === "transfer" ? "Pickup Date" : "Date"}
                                         </label>
                                         <Popover>
                                             <PopoverTrigger asChild>
@@ -481,7 +691,7 @@ export default function Hero() {
                                                     )}
                                                 >
                                                     <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                                                    {tripDate ? format(tripDate, "MMM d, yyyy") : "Select date"}
+                                                    {tripDate ? format(tripDate, "MMM d, yyyy") : serviceType === "transfer" ? "Select pickup date" : "Select date"}
                                                 </button>
                                             </PopoverTrigger>
                                             <PopoverContent className="w-auto p-0" align="start">
@@ -496,8 +706,72 @@ export default function Hero() {
                                     </div>
                                     <div className="flex-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Passengers
+                                            {serviceType === "transfer" ? "Pickup Time" : "Passengers"}
                                         </label>
+                                        {serviceType === "transfer" ? (
+                                            <Input
+                                                type="time"
+                                                value={pickupTime}
+                                                onChange={e => setPickupTime(e.target.value)}
+                                                className="h-11 border-gray-200 rounded-xl bg-gray-50/80 text-sm focus:border-blue-500 focus:ring-blue-500"
+                                            />
+                                        ) : (
+                                            <div className="relative">
+                                                <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                                <Input
+                                                    type="number"
+                                                    min={1}
+                                                    placeholder="0"
+                                                    value={passengers}
+                                                    onChange={e => setPassengers(e.target.value)}
+                                                    className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 text-sm focus:border-blue-500 focus:ring-blue-500"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {serviceType === "transfer" && transferTripType === "round-trip" && (
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <div className="flex-1">
+                                            <label className="block text-sm font-medium text-gray-700 mb-1.5">Departure Date</label>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <button
+                                                        className={cn(
+                                                            "w-full h-11 pl-9 pr-3 text-sm text-left border border-gray-200 rounded-xl bg-gray-50/80 relative flex items-center hover:border-blue-400 transition-colors",
+                                                            !departureDate && "text-gray-400"
+                                                        )}
+                                                    >
+                                                        <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                                        {departureDate ? format(departureDate, "MMM d, yyyy") : "Select departure date"}
+                                                    </button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0" align="start">
+                                                    <Calendar
+                                                        mode="single"
+                                                        selected={departureDate}
+                                                        onSelect={setDepartureDate}
+                                                        autoFocus
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
+                                        </div>
+                                        <div className="flex-1">
+                                            <label className="block text-sm font-medium text-gray-700 mb-1.5">Departure Time</label>
+                                            <Input
+                                                type="time"
+                                                value={departureTime}
+                                                onChange={e => setDepartureTime(e.target.value)}
+                                                className="h-11 border-gray-200 rounded-xl bg-gray-50/80 text-sm focus:border-blue-500 focus:ring-blue-500"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {serviceType === "transfer" && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Passengers</label>
                                         <div className="relative">
                                             <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                                             <Input
@@ -510,7 +784,7 @@ export default function Hero() {
                                             />
                                         </div>
                                     </div>
-                                </div>
+                                )}
 
                                 {/* Name + Email */}
                                 <div className="flex flex-col sm:flex-row gap-3">
@@ -562,6 +836,20 @@ export default function Hero() {
                                         />
                                     </div>
                                 </div>
+
+                                {serviceType === "tour" && (
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                            Note <span className="text-gray-400">(optional)</span>
+                                        </label>
+                                        <textarea
+                                            value={note}
+                                            onChange={e => setNote(e.target.value)}
+                                            placeholder="Any extra details for your tour request"
+                                            className="w-full min-h-20 rounded-xl border border-gray-200 bg-gray-50/80 p-3 text-sm outline-none focus:border-blue-500"
+                                        />
+                                    </div>
+                                )}
 
                                 {/* CTA button */}
                                 {submitted ? (
