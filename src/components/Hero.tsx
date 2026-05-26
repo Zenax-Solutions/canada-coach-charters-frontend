@@ -607,130 +607,130 @@ export default function Hero() {
                                     </div>
                                 ) : (
                                     <>
-                                {/* Pickup & Drop-off */}
-                                <div className="flex flex-col lg:flex-row gap-3">
-                                    <div className="flex-1">
-                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Pickup
-                                        </label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                                            <Input
-                                                placeholder="Enter pickup location"
-                                                value={pickup}
-                                                onChange={e => {
-                                                    setPickup(e.target.value);
-                                                    setPickupPoint(null);
-                                                }}
-                                                onKeyDown={(e) => {
-                                                    if (!pickupSuggestions.length) return;
+                                        {/* Pickup & Drop-off */}
+                                        <div className="flex flex-col lg:flex-row gap-3">
+                                            <div className="flex-1">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                                    Pickup
+                                                </label>
+                                                <div className="relative">
+                                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                                    <Input
+                                                        placeholder="Enter pickup location"
+                                                        value={pickup}
+                                                        onChange={e => {
+                                                            setPickup(e.target.value);
+                                                            setPickupPoint(null);
+                                                        }}
+                                                        onKeyDown={(e) => {
+                                                            if (!pickupSuggestions.length) return;
 
-                                                    if (e.key === "ArrowDown") {
-                                                        e.preventDefault();
-                                                        setPickupActiveIndex((current) => (current + 1) % pickupSuggestions.length);
-                                                    }
+                                                            if (e.key === "ArrowDown") {
+                                                                e.preventDefault();
+                                                                setPickupActiveIndex((current) => (current + 1) % pickupSuggestions.length);
+                                                            }
 
-                                                    if (e.key === "ArrowUp") {
-                                                        e.preventDefault();
-                                                        setPickupActiveIndex((current) =>
-                                                            current <= 0 ? pickupSuggestions.length - 1 : current - 1
-                                                        );
-                                                    }
+                                                            if (e.key === "ArrowUp") {
+                                                                e.preventDefault();
+                                                                setPickupActiveIndex((current) =>
+                                                                    current <= 0 ? pickupSuggestions.length - 1 : current - 1
+                                                                );
+                                                            }
 
-                                                    if (e.key === "Enter" && pickupActiveIndex >= 0) {
-                                                        e.preventDefault();
-                                                        selectPickupSuggestion(pickupSuggestions[pickupActiveIndex]);
-                                                    }
+                                                            if (e.key === "Enter" && pickupActiveIndex >= 0) {
+                                                                e.preventDefault();
+                                                                selectPickupSuggestion(pickupSuggestions[pickupActiveIndex]);
+                                                            }
 
-                                                    if (e.key === "Escape") {
-                                                        setPickupSuggestions([]);
-                                                        setPickupActiveIndex(-1);
-                                                    }
-                                                }}
-                                                className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
-                                            />
-                                            {pickupSuggestions.length > 0 && (
-                                                <div className="absolute z-30 mt-1 w-full max-h-56 sm:max-h-48 overflow-y-auto overscroll-contain touch-pan-y rounded-xl border border-gray-200 bg-white shadow-lg [webkit-overflow-scrolling:touch]">
-                                                    {pickupSuggestions.map((s, index) => (
-                                                        <button
-                                                            key={`${s.lat}-${s.lon}-${s.label}`}
-                                                            type="button"
-                                                            onClick={() => selectPickupSuggestion(s)}
-                                                            className={cn(
-                                                                "flex w-full items-start gap-2 border-b border-gray-100 px-3 py-2 text-left text-xs text-gray-700 hover:bg-blue-50 last:border-b-0",
-                                                                index === pickupActiveIndex && "bg-blue-50 text-blue-700"
-                                                            )}
-                                                        >
-                                                            <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
-                                                            <span>{s.label}</span>
-                                                        </button>
-                                                    ))}
+                                                            if (e.key === "Escape") {
+                                                                setPickupSuggestions([]);
+                                                                setPickupActiveIndex(-1);
+                                                            }
+                                                        }}
+                                                        className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
+                                                    />
+                                                    {pickupSuggestions.length > 0 && (
+                                                        <div className="absolute z-30 mt-1 w-full max-h-56 sm:max-h-48 overflow-y-auto overscroll-contain touch-pan-y rounded-xl border border-gray-200 bg-white shadow-lg [webkit-overflow-scrolling:touch]">
+                                                            {pickupSuggestions.map((s, index) => (
+                                                                <button
+                                                                    key={`${s.lat}-${s.lon}-${s.label}`}
+                                                                    type="button"
+                                                                    onClick={() => selectPickupSuggestion(s)}
+                                                                    className={cn(
+                                                                        "flex w-full items-start gap-2 border-b border-gray-100 px-3 py-2 text-left text-xs text-gray-700 hover:bg-blue-50 last:border-b-0",
+                                                                        index === pickupActiveIndex && "bg-blue-50 text-blue-700"
+                                                                    )}
+                                                                >
+                                                                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
+                                                                    <span>{s.label}</span>
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    )}
                                                 </div>
-                                            )}
-                                        </div>
-                                    </div>
+                                            </div>
 
-                                    <div className="flex-1">
-                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                            {serviceType === "transfer" ? "Destination" : "Drop-off"}
-                                        </label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
-                                            <Input
-                                                placeholder={serviceType === "transfer" ? "Enter destination location" : "Enter drop-off location"}
-                                                value={dropoff}
-                                                onChange={e => {
-                                                    setDropoff(e.target.value);
-                                                    setDropoffPoint(null);
-                                                }}
-                                                onKeyDown={(e) => {
-                                                    if (!dropoffSuggestions.length) return;
+                                            <div className="flex-1">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                                    {serviceType === "transfer" ? "Destination" : "Drop-off"}
+                                                </label>
+                                                <div className="relative">
+                                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
+                                                    <Input
+                                                        placeholder={serviceType === "transfer" ? "Enter destination location" : "Enter drop-off location"}
+                                                        value={dropoff}
+                                                        onChange={e => {
+                                                            setDropoff(e.target.value);
+                                                            setDropoffPoint(null);
+                                                        }}
+                                                        onKeyDown={(e) => {
+                                                            if (!dropoffSuggestions.length) return;
 
-                                                    if (e.key === "ArrowDown") {
-                                                        e.preventDefault();
-                                                        setDropoffActiveIndex((current) => (current + 1) % dropoffSuggestions.length);
-                                                    }
+                                                            if (e.key === "ArrowDown") {
+                                                                e.preventDefault();
+                                                                setDropoffActiveIndex((current) => (current + 1) % dropoffSuggestions.length);
+                                                            }
 
-                                                    if (e.key === "ArrowUp") {
-                                                        e.preventDefault();
-                                                        setDropoffActiveIndex((current) =>
-                                                            current <= 0 ? dropoffSuggestions.length - 1 : current - 1
-                                                        );
-                                                    }
+                                                            if (e.key === "ArrowUp") {
+                                                                e.preventDefault();
+                                                                setDropoffActiveIndex((current) =>
+                                                                    current <= 0 ? dropoffSuggestions.length - 1 : current - 1
+                                                                );
+                                                            }
 
-                                                    if (e.key === "Enter" && dropoffActiveIndex >= 0) {
-                                                        e.preventDefault();
-                                                        selectDropoffSuggestion(dropoffSuggestions[dropoffActiveIndex]);
-                                                    }
+                                                            if (e.key === "Enter" && dropoffActiveIndex >= 0) {
+                                                                e.preventDefault();
+                                                                selectDropoffSuggestion(dropoffSuggestions[dropoffActiveIndex]);
+                                                            }
 
-                                                    if (e.key === "Escape") {
-                                                        setDropoffSuggestions([]);
-                                                        setDropoffActiveIndex(-1);
-                                                    }
-                                                }}
-                                                className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
-                                            />
-                                            {dropoffSuggestions.length > 0 && (
-                                                <div className="absolute z-30 mt-1 w-full max-h-56 sm:max-h-48 overflow-y-auto overscroll-contain touch-pan-y rounded-xl border border-gray-200 bg-white shadow-lg [webkit-overflow-scrolling:touch]">
-                                                    {dropoffSuggestions.map((s, index) => (
-                                                        <button
-                                                            key={`${s.lat}-${s.lon}-${s.label}`}
-                                                            type="button"
-                                                            onClick={() => selectDropoffSuggestion(s)}
-                                                            className={cn(
-                                                                "flex w-full items-start gap-2 border-b border-gray-100 px-3 py-2 text-left text-xs text-gray-700 hover:bg-blue-50 last:border-b-0",
-                                                                index === dropoffActiveIndex && "bg-blue-50 text-blue-700"
-                                                            )}
-                                                        >
-                                                            <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
-                                                            <span>{s.label}</span>
-                                                        </button>
-                                                    ))}
+                                                            if (e.key === "Escape") {
+                                                                setDropoffSuggestions([]);
+                                                                setDropoffActiveIndex(-1);
+                                                            }
+                                                        }}
+                                                        className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
+                                                    />
+                                                    {dropoffSuggestions.length > 0 && (
+                                                        <div className="absolute z-30 mt-1 w-full max-h-56 sm:max-h-48 overflow-y-auto overscroll-contain touch-pan-y rounded-xl border border-gray-200 bg-white shadow-lg [webkit-overflow-scrolling:touch]">
+                                                            {dropoffSuggestions.map((s, index) => (
+                                                                <button
+                                                                    key={`${s.lat}-${s.lon}-${s.label}`}
+                                                                    type="button"
+                                                                    onClick={() => selectDropoffSuggestion(s)}
+                                                                    className={cn(
+                                                                        "flex w-full items-start gap-2 border-b border-gray-100 px-3 py-2 text-left text-xs text-gray-700 hover:bg-blue-50 last:border-b-0",
+                                                                        index === dropoffActiveIndex && "bg-blue-50 text-blue-700"
+                                                                    )}
+                                                                >
+                                                                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
+                                                                    <span>{s.label}</span>
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    )}
                                                 </div>
-                                            )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
                                     </>
                                 )}
 

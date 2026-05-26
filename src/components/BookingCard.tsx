@@ -465,7 +465,9 @@ export default function BookingCard({
         <div
             className={cn(
                 "bg-white rounded-2xl p-6 w-full",
-                variant === "hero" ? "shadow-2xl" : "shadow-lg border border-gray-100"
+                variant === "hero"
+                    ? "shadow-2xl h-[500px] max-h-[500px] flex flex-col"
+                    : "shadow-lg border border-gray-100"
             )}
         >
             {/* ── Tabs ── */}
@@ -501,7 +503,7 @@ export default function BookingCard({
                 </div>
             )}
 
-            <div className="space-y-4">
+            <div className={cn("space-y-4", variant === "hero" && "min-h-0 flex-1 overflow-y-auto pr-1") }>
                 {mode === "booking" ? (
                     <>
                         {/* From */}
