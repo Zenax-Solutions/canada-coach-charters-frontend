@@ -549,7 +549,7 @@ export default function Hero() {
                                         )}
                                     </div>
                                 ) : (
-
+                                    <>
                                 {/* Pickup & Drop-off */}
                                 <div className="flex flex-col lg:flex-row gap-3">
                                     <div className="flex-1">
@@ -674,6 +674,7 @@ export default function Hero() {
                                         </div>
                                     </div>
                                 </div>
+                                    </>
                                 )}
 
                                 {/* Date & Passengers */}
