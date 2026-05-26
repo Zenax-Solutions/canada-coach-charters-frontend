@@ -18,10 +18,9 @@ import {
     Briefcase,
     Heart,
     Van,
-    Globe,
-    MessageCircle,
-    Send,
 } from "lucide-react";
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function ContactPage() {
     const serviceAreas = [
@@ -39,6 +38,29 @@ export default function ContactPage() {
         "Whitby",
         "Niagara Falls",
         "Ottawa",
+    ];
+
+    const socialLinks = [
+        {
+            label: "Facebook",
+            href: "https://web.archive.org/web/20250316064900/https://www.facebook.com/people/Canada-Coach-Charters/100088672182959/",
+            icon: FaFacebookF,
+        },
+        {
+            label: "Instagram",
+            href: "https://web.archive.org/web/20250316064900/https://www.instagram.com/canadacoachcharters/",
+            icon: FaInstagram,
+        },
+        {
+            label: "LinkedIn",
+            href: "https://web.archive.org/web/20250316064900/https://www.linkedin.com/company/canada-coach-charterss",
+            icon: FaLinkedinIn,
+        },
+        {
+            label: "X (Twitter)",
+            href: "https://web.archive.org/web/20250316064900/https://twitter.com/coachcharterss",
+            icon: FaXTwitter,
+        },
     ];
 
     return (
@@ -106,12 +128,6 @@ export default function ContactPage() {
                                         <Star className="w-4 h-4 text-amber-300" />
                                         <a href="https://www.google.com/search?q=canada+coach+charters+reviews" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
                                             Google Reviews
-                                        </a>
-                                    </div>
-                                    <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur px-4 py-3 flex items-center gap-2">
-                                        <Star className="w-4 h-4 text-emerald-300" />
-                                        <a href="https://www.trustpilot.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-                                            Trustpilot
                                         </a>
                                     </div>
                                     <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur px-4 py-3 flex items-center gap-2">
@@ -254,15 +270,22 @@ export default function ContactPage() {
                             <div className="mt-7 pt-6 border-t border-slate-200">
                                 <p className="text-xs text-gray-500 mb-3">Follow Us</p>
                                 <div className="flex items-center gap-3">
-                                    <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors" aria-label="Facebook">
-                                        <Globe className="w-4 h-4" />
-                                    </a>
-                                    <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors" aria-label="Instagram">
-                                        <MessageCircle className="w-4 h-4" />
-                                    </a>
-                                    <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors" aria-label="LinkedIn">
-                                        <Send className="w-4 h-4" />
-                                    </a>
+                                    {socialLinks.map((item) => {
+                                        const Icon = item.icon;
+
+                                        return (
+                                            <a
+                                                key={item.label}
+                                                href={item.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                                                aria-label={item.label}
+                                            >
+                                                <Icon className="w-4 h-4" />
+                                            </a>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
