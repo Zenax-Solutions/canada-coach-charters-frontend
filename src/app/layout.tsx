@@ -24,13 +24,18 @@ export const metadata: Metadata = {
   creator: "Canada Coach Charters",
   publisher: "Canada Coach Charters",
   title: {
-    default: "Canada Coach Charters | Coach Charter, Transfers & Tour Packages",
+    default: "Canada Coach Charters | Rental Bus Services in Toronto",
     template: "%s | Canada Coach Charters",
   },
   description:
-    "Canada Coach Charters provides premium coach charter rentals, airport transfers, group transportation, and curated international tour packages with trusted drivers and transparent pricing.",
+    "Explore Canada with Canada Coach Charters. We provide wedding, corporate, private travel, school rentals, and airport shuttle services at affordable rates.",
   keywords: [
     "Canada Coach Charters",
+    "rental bus services Toronto",
+    "charter coach service Toronto",
+    "luxury coach buses Toronto",
+    "shuttle transfer service Toronto",
+    "bus rental services Toronto",
     "coach charter Canada",
     "bus rental Toronto",
     "charter bus Toronto",
@@ -56,13 +61,18 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
+    languages: {
+      "en-CA": "/",
+      "x-default": "/",
+    },
   },
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: "Canada Coach Charters | Coach Charter, Transfers & Tour Packages",
+    locale: "en_CA",
+    title: "Canada Coach Charters | Rental Bus Services in Toronto",
     description:
-      "Coach charters, airport transfers, and curated guided tour packages with transparent pricing and trusted service across Canada.",
+      "Explore Canada with Canada Coach Charters. Wedding, corporate, private travel, school rentals, and airport shuttle transportation services.",
     siteName: "Canada Coach Charters",
     images: [
       {
@@ -75,14 +85,28 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Canada Coach Charters | Coach Charter, Transfers & Tour Packages",
+    title: "Canada Coach Charters | Rental Bus Services in Toronto",
     description:
-      "Premium coach charters, transfers, and guided tours with transparent pricing and reliable support.",
+      "Wedding, corporate, school, private, and airport shuttle transportation services with dependable support.",
+    creator: "@canadacoachcharters",
+    site: "@canadacoachcharters",
     images: ["/page-header.jpg"],
+  },
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
