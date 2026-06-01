@@ -9,21 +9,24 @@ export async function GET(request: Request) {
             return NextResponse.json([]);
         }
 
-        const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=8&dedupe=1&q=${encodeURIComponent(q)}`;
+        const backendBase = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
+        const backendUrl = `${backendBase}/location/search?q=${encodeURIComponent(q)}`;
 
-        const res = await fetch(url, {
+        const backendRes = await fetch(backendUrl, {
             headers: {
                 Accept: "application/json",
-                "User-Agent": "CanadaCoachCharters/1.0",
             },
+            cache: "no-store",
         });
 
-        if (!res.ok) {
-            return NextResponse.json([], { status: 200 });
+        if (backendRes.ok) {
+            const backendData = await backendRes.json();
+            if (Array.isArray(backendData)) {
+                return NextResponse.json(backendData);
+            }
         }
 
-        const data = await res.json();
-        return NextResponse.json(Array.isArray(data) ? data : []);
+        return NextResponse.json([]);
     } catch {
         return NextResponse.json([], { status: 200 });
     }

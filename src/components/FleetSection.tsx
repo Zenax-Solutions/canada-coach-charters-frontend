@@ -179,7 +179,7 @@ export default function FleetSection() {
                 isOpen={quoteOpen}
                 onClose={() => setQuoteOpen(false)}
                 title="Fleet Quote"
-                serviceType="charter"
+                serviceType="transfer"
                 context={quoteContext}
             />
         </>

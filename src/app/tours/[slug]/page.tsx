@@ -222,7 +222,7 @@ export default async function TourDetailPage({ params }: { params: Promise<{ slu
                 <section className="relative px-2 pb-14 pt-28 sm:px-8 sm:pb-20 sm:pt-36 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: "url('/page-header.jpg')" }}
+                        style={{ backgroundImage: "url('/page-header/69ea2c4020765b2e7a997484_vip-bus-viandi.jpg')" }}
                     />
                     <div className="absolute inset-0 bg-black/60" />
 
@@ -483,7 +483,7 @@ export default async function TourDetailPage({ params }: { params: Promise<{ slu
                 </article>
             </section>
 
-            <QuoteSection />
+            <QuoteSection initialServiceType="tour" />
             <Footer />
         </div>
     );

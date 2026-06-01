@@ -26,6 +26,7 @@ const footerLinkSections = [
             { label: "Gallery", href: "/gallery" },
             { label: "Contact Us", href: "/contact" },
             { label: "Privacy Policy", href: "/privacy-policy" },
+            { label: "Terms and Conditions", href: "/terms-and-conditions" },
         ],
     },
 ];
@@ -33,22 +34,22 @@ const footerLinkSections = [
 const socialLinks = [
     {
         label: "Facebook",
-        href: "https://web.archive.org/web/20250316064900/https://www.facebook.com/people/Canada-Coach-Charters/100088672182959/",
+        href: "https://www.facebook.com/people/Canada-Coach-Charters/100088672182959/",
         icon: FaFacebookF,
     },
     {
         label: "Instagram",
-        href: "https://web.archive.org/web/20250316064900/https://www.instagram.com/canadacoachcharters/",
+        href: "https://www.instagram.com/canadacoachcharters/",
         icon: FaInstagram,
     },
     {
         label: "LinkedIn",
-        href: "https://web.archive.org/web/20250316064900/https://www.linkedin.com/company/canada-coach-charterss",
+        href: "https://www.linkedin.com/company/canada-coach-charterss",
         icon: FaLinkedinIn,
     },
     {
         label: "X (Twitter)",
-        href: "https://web.archive.org/web/20250316064900/https://twitter.com/coachcharterss",
+        href: "https://x.com/coachcharterss",
         icon: FaXTwitter,
     },
 ];
@@ -58,7 +59,7 @@ export default function Footer() {
 
     return (
         <>
-            <footer className="pt-4 pb-8">
+            <footer className="relative z-20 pt-4 pb-8">
                 <div className="mx-auto">
                     <div className="relative overflow-hidden rounded-[1.75rem] border border-slate-200 shadow-[0_28px_40px_-28px_rgba(15,23,42,0.7)]">
                         <Image
@@ -191,7 +192,7 @@ export default function Footer() {
                 isOpen={quoteOpen}
                 onClose={() => setQuoteOpen(false)}
                 title="Get a Quote"
-                serviceType="charter"
+                serviceType="transfer"
                 context="Quote request from footer"
             />
         </>

@@ -1,13 +1,19 @@
 import { Clock, ShieldCheck, MapPin } from "lucide-react";
 import BookingCard from "@/components/BookingCard";
 
+type ServiceType = "charter" | "transfer" | "tour";
+
+interface QuoteSectionProps {
+    initialServiceType?: ServiceType;
+}
+
 const perks = [
     { icon: Clock, text: "Response within 2 hours" },
     { icon: ShieldCheck, text: "Licensed & fully insured" },
     { icon: MapPin, text: "Serving all of Canada" },
 ];
 
-export default function QuoteSection() {
+export default function QuoteSection({ initialServiceType = "transfer" }: QuoteSectionProps) {
     return (
         <section id="quick-quote" className="relative overflow-hidden rounded-[2rem] py-16 lg:py-24 px-2 sm:px-8 lg:px-10">
             <video
@@ -55,7 +61,7 @@ export default function QuoteSection() {
 
                         {/* Right — quote form */}
                         <div className="w-full lg:w-[440px] shrink-0">
-                            <BookingCard mode="quote" />
+                            <BookingCard mode="quote" initialServiceType={initialServiceType} />
                         </div>
 
                     </div>

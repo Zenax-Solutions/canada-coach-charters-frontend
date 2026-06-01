@@ -9,6 +9,10 @@ export interface RouteMetrics {
     durationMinutes: number;
 }
 
+export const FIXED_DISTANCE_ORIGIN_ADDRESS = "455 Ferrier St, Markham, ON L3R 5Z2, Canada";
+
+let fixedDistanceOriginCache: GeoPoint | null | undefined;
+
 function toPoint(item: { lat: string; lon: string; display_name: string }): GeoPoint {
     return {
         lat: Number.parseFloat(item.lat),
@@ -17,65 +21,27 @@ function toPoint(item: { lat: string; lon: string; display_name: string }): GeoP
     };
 }
 
-function normalizeSearchText(value: string): string {
-    return value.toLowerCase().replace(/[^a-z0-9]/g, "");
-}
-
-/** Fuzzy scoring for Google Maps-style matching */
-function scoreFuzzyMatch(label: string, query: string): number {
-    const lowerLabel = label.toLowerCase();
-    const lowerQuery = query.toLowerCase();
-    const normalizedLabel = normalizeSearchText(label);
-    const normalizedQuery = normalizeSearchText(query);
-
-    if (!normalizedQuery) return -1;
-
-    // Exact match: highest score
-    if (lowerLabel === lowerQuery || normalizedLabel === normalizedQuery) return 1000;
-
-    // Starts with: very high score
-    if (lowerLabel.startsWith(lowerQuery) || normalizedLabel.startsWith(normalizedQuery)) {
-        return 500 + (100 - label.length);
-    }
-
-    // Contains as a word (space-preceded): high score
-    if (lowerLabel.includes(` ${lowerQuery}`)) return 300 + (100 - label.length);
-
-    // Substring match: base score, adjusted by position and length
-    if (lowerLabel.includes(lowerQuery) || normalizedLabel.includes(normalizedQuery)) {
-        const position = lowerLabel.includes(lowerQuery)
-            ? lowerLabel.indexOf(lowerQuery)
-            : normalizedLabel.indexOf(normalizedQuery);
-        // Earlier matches and shorter labels score higher
-        return 100 + (1000 - position) - label.length;
-    }
-
-    // No match
-    return -1;
-}
-
 export async function searchGtaLocations(query: string): Promise<GeoPoint[]> {
     if (!query.trim() || query.trim().length < 2) return [];
 
     try {
         const res = await fetch(`/api/location/search?q=${encodeURIComponent(query)}`);
-        if (!res.ok) return [];
+        if (!res.ok) {
+            return [];
+        }
 
         const raw = (await res.json()) as unknown;
-        if (!Array.isArray(raw)) return [];
+        if (!Array.isArray(raw)) {
+            return [];
+        }
 
         const data = raw as Array<{ lat: string; lon: string; display_name: string }>;
 
-        return data
+        const results = data
             .map(toPoint)
-            .filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lon))
-            // Score and filter by fuzzy match
-            .map((p) => ({ ...p, score: scoreFuzzyMatch(p.label, query) }))
-            .filter((p) => p.score >= 0)
-            // Sort by score descending
-            .sort((a, b) => b.score - a.score)
-            // Remove score property from result
-            .map(({ score, ...p }) => p);
+            .filter((p) => Number.isFinite(p.lat) && Number.isFinite(p.lon));
+
+        return results;
     } catch {
         return [];
     }
@@ -105,4 +71,22 @@ export async function getDrivingRouteMetrics(from: GeoPoint, to: GeoPoint): Prom
         distanceKm: Number((first.distance / 1000).toFixed(1)),
         durationMinutes: Math.round(first.duration / 60),
     };
+}
+
+async function getFixedDistanceOriginPoint(): Promise<GeoPoint | null> {
+    if (fixedDistanceOriginCache !== undefined) {
+        return fixedDistanceOriginCache;
+    }
+
+    fixedDistanceOriginCache = await geocodeFirstGtaLocation(FIXED_DISTANCE_ORIGIN_ADDRESS);
+    return fixedDistanceOriginCache;
+}
+
+export async function getDrivingRouteMetricsToDropoff(dropoff: GeoPoint): Promise<RouteMetrics | null> {
+    const fixedOrigin = await getFixedDistanceOriginPoint();
+    if (!fixedOrigin) {
+        return null;
+    }
+
+    return getDrivingRouteMetrics(fixedOrigin, dropoff);
 }

@@ -135,14 +135,13 @@ export default function Header() {
                                 >
                                     <p className="px-3 pb-1.5 pt-0.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">GTA Areas</p>
                                     {gtaAreas.map((area) => (
-                                        <Link
+                                        <div
                                             key={area}
-                                            href={`/service-areas/${area.toLowerCase().replace(/\s+/g, "-")}`}
-                                            className="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                                            className="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700"
                                         >
                                             <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                                             {area}
-                                        </Link>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -203,15 +202,13 @@ export default function Header() {
                         <div className={cn("overflow-hidden transition-all duration-200", mobileAreasOpen ? "max-h-96" : "max-h-0")}>
                             <div className="pl-4 flex flex-col gap-0.5 pb-1">
                                 {gtaAreas.map((area) => (
-                                    <Link
+                                    <div
                                         key={area}
-                                        href={`/service-areas/${area.toLowerCase().replace(/\s+/g, "-")}`}
-                                        className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-                                        onClick={() => setMobileOpen(false)}
+                                        className="flex items-center gap-2 px-3 py-2 text-sm text-white/70 rounded-lg"
                                     >
                                         <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                                         {area}
-                                    </Link>
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -239,7 +236,7 @@ export default function Header() {
                 isOpen={quoteOpen}
                 onClose={() => setQuoteOpen(false)}
                 title="Get a Quote"
-                serviceType="charter"
+                serviceType="transfer"
                 context="Quote request from header"
             />
         </>

@@ -8,8 +8,9 @@ import QuoteModal from "@/components/QuoteModal";
 import {
     Plane,
     Briefcase,
-    PawPrint,
-    Accessibility,
+    Heart,
+    GraduationCap,
+    Compass,
     Sparkles,
     Bus,
     Users,
@@ -17,7 +18,6 @@ import {
     Anchor,
     Building2,
     Route,
-    MapPin,
     ArrowRight,
     ChevronRight,
 } from "lucide-react";
@@ -27,91 +27,91 @@ import Image from "next/image";
 const transfers = [
     {
         icon: Plane,
-        title: "Airport Transfers",
+        title: "Airport Arrivals and Departures",
         description:
-            "Ensure a smooth start or end to your journey with airport transfers, offering reliable and punctual transportation between your location and the airport. Experience stress-free travel with dedicated services tailored to your flight schedule.",
-    },
-    {
-        icon: Briefcase,
-        title: "Baggage Transfers",
-        description:
-            "Experience the freedom of hands-free travel with baggage transfers, ensuring your belongings reach your destination securely and promptly. Say goodbye to the hassle of carrying heavy bags and focus on enjoying your journey.",
-    },
-    {
-        icon: PawPrint,
-        title: "Pet-Friendly Transfers",
-        description:
-            "Choose pet-friendly transfers for a journey that accommodates your furry companions, ensuring a stress-free and comfortable ride for both you and your pets. Enjoy the convenience of traveling together with your four-legged friends.",
-    },
-    {
-        icon: Accessibility,
-        title: "Disability-Accessible Transfers",
-        description:
-            "Ensure an inclusive travel experience with disability-accessible transfers, providing comfortable and accommodating transportation for individuals with mobility challenges. Embrace a journey where accessibility is a top priority.",
-    },
-    {
-        icon: Sparkles,
-        title: "Luxury Transfers",
-        description:
-            "Indulge in sophistication with luxury transfers that redefine travel. Experience comfort and style as you are chauffeured in premium vehicles, ensuring a lavish journey tailored to the discerning traveller.",
-    },
-    {
-        icon: Bus,
-        title: "Shuttle Transfers",
-        description:
-            "Experience seamless travel with shuttle transfers, offering direct and efficient transportation between designated locations. Enjoy the convenience of a dedicated service that ensures you reach your destination comfortably and on time.",
-    },
-    {
-        icon: Users,
-        title: "Group Transfers",
-        description:
-            "Facilitate smooth and coordinated group travel with specialized group transfers. Tailored for events, corporate outings, or leisure trips, these services ensure a cohesive and comfortable journey for all participants.",
-    },
-    {
-        icon: ShieldCheck,
-        title: "Private Transfers",
-        description:
-            "Enjoy the ultimate in personalized travel with private transfers, ensuring a direct and secure journey from your doorstep to the desired destination. Experience the convenience of dedicated transportation tailored to your schedule and preferences.",
-    },
-    {
-        icon: Anchor,
-        title: "Port Transfers",
-        description:
-            "Simplify the transition from land to sea with port transfers, offering convenient and reliable transportation services to and from cruise terminals. Ensure a stress-free start or end to your cruise adventure.",
+            "Private transfer coordination for Toronto Pearson and regional airports with reliable timing, luggage handling, and organized drop-off.",
     },
     {
         icon: Building2,
-        title: "Hotel Transfers",
+        title: "Hotel and Resort Transfers",
         description:
-            "Elevate your travel experience with hotel transfers, ensuring a seamless transition from airport or station to your accommodation. Enjoy the convenience of door-to-door service, setting the tone for a relaxed and luxurious stay.",
+            "Smooth transportation between hotels, resorts, attractions, and venues for groups that need dependable, on-time service.",
+    },
+    {
+        icon: Briefcase,
+        title: "Corporate Group Transportation",
+        description:
+            "Reliable transfer planning for meetings, conferences, and business events with efficient routing and schedule-based coordination.",
+    },
+    {
+        icon: Heart,
+        title: "Wedding Guest Transfers",
+        description:
+            "Keep your wedding transportation stress-free with organized guest movement between hotels, ceremonies, receptions, and after-events.",
+    },
+    {
+        icon: Bus,
+        title: "Conference and Convention Shuttles",
+        description:
+            "Dedicated shuttle support for delegates, teams, and attendees across single or multi-stop conference itineraries.",
+    },
+    {
+        icon: Users,
+        title: "Sports Team Transportation",
+        description:
+            "Dependable transfer service for athletes, coaches, and support staff with space and timing designed for game-day logistics.",
+    },
+    {
+        icon: GraduationCap,
+        title: "School and University Group Transfers",
+        description:
+            "Safe and organized transfers for students and education groups with professional scheduling and coordinated travel support.",
+    },
+    {
+        icon: Compass,
+        title: "Tour Group Transfers",
+        description:
+            "Flexible transfer operations for guided tours and private groups, built around your destinations, stops, and pace.",
+    },
+    {
+        icon: Anchor,
+        title: "Cruise, Rail, and Station Transfers",
+        description:
+            "Convenient transfers to and from cruise terminals, rail stations, and transport hubs with precise pickup and departure planning.",
     },
     {
         icon: Route,
-        title: "Intercity Transfers",
+        title: "Private City-to-City Transfers",
         description:
-            "Experience the ease of intercity transfers, designed for efficient and smooth travel between major destinations. Whether for business or leisure, these services provide a comfortable and time-saving solution for those seeking hassle-free transportation between cities.",
+            "Comfortable city-to-city transfer options across Toronto and Ontario, tailored to route timing, group size, and luggage needs.",
     },
     {
-        icon: MapPin,
-        title: "City Transfers",
+        icon: ShieldCheck,
+        title: "Baggage and Luggage Transfers",
         description:
-            "Navigate cityscapes with ease through city transfers, providing convenient and swift transportation between key locations. Say goodbye to urban travel challenges and embrace a seamless journey within the heart of the city.",
+            "Secure luggage transportation between airports, hotels, events, and long-distance destinations to keep your trip moving smoothly.",
+    },
+    {
+        icon: Sparkles,
+        title: "Luxury Coach and Shuttle Transfers",
+        description:
+            "From private shuttle buses to luxury coaches, we match the right vehicle to your comfort preferences, travel distance, and group size.",
     },
 ];
 
 const transferImages: Record<string, string> = {
-    "Airport Transfers": "/tranfers/Airport-transfers.jpg",
-    "Baggage Transfers": "/tranfers/baggage_transffer.jpg",
-    "Pet-Friendly Transfers": "/tranfers/Pet-Friendly.jpg",
-    "Disability-Accessible Transfers": "/tranfers/Disability-Accessible.jpg",
-    "Luxury Transfers": "/tranfers/Luxury-Transfers.jpg",
-    "Shuttle Transfers": "/tranfers/Shuttle-Transfers.jpg",
-    "Group Transfers": "/tranfers/group-transfer.jpg",
-    "Private Transfers": "/tranfers/Private-Transfers.jpg",
-    "Port Transfers": "/tranfers/Port-Transfers.jpg",
-    "Hotel Transfers": "/tranfers/Hotel-Transfers.jpg",
-    "Intercity Transfers": "/tranfers/Intercity-Transfers.jpg",
-    "City Transfers": "/tranfers/City-Transfers.jpg",
+    "Airport Arrivals and Departures": "/tranfers/Airport-transfers.jpg",
+    "Hotel and Resort Transfers": "/tranfers/Hotel-Transfers.jpg",
+    "Corporate Group Transportation": "/tranfers/group-transfer.jpg",
+    "Wedding Guest Transfers": "/tranfers/Private-Transfers.jpg",
+    "Conference and Convention Shuttles": "/tranfers/Shuttle-Transfers.jpg",
+    "Sports Team Transportation": "/tranfers/group-transfer.jpg",
+    "School and University Group Transfers": "/tranfers/Disability-Accessible.jpg",
+    "Tour Group Transfers": "/tranfers/City-Transfers.jpg",
+    "Cruise, Rail, and Station Transfers": "/tranfers/Port-Transfers.jpg",
+    "Private City-to-City Transfers": "/tranfers/Intercity-Transfers.jpg",
+    "Baggage and Luggage Transfers": "/tranfers/baggage_transffer.jpg",
+    "Luxury Coach and Shuttle Transfers": "/tranfers/Luxury-Transfers.jpg",
 };
 
 export default function TransfersPage() {
@@ -132,7 +132,7 @@ export default function TransfersPage() {
                 <div className="relative pt-36 pb-20 px-2 sm:px-8 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: "url('/page-header.jpg')" }}
+                        style={{ backgroundImage: "url('/page-header/ChatGPT-Image-May-8-2026-03_37_17-PM.webp')" }}
                     />
                     <div className="absolute inset-0 bg-black/55" />
                     {/* Subtle grid overlay */}
@@ -155,16 +155,17 @@ export default function TransfersPage() {
                         </nav>
 
                         <span className="inline-block text-xs font-semibold text-blue-200 border border-blue-500 bg-blue-600/50 rounded-full px-4 py-1.5 mb-5">
-                            Transfer Services
+                            Private Bus Transfer Services in Toronto
                         </span>
 
                         <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-4 max-w-2xl">
-                            Explore Our Transfer Services
+                            Transfer Services in Toronto and Across Ontario
                         </h1>
-                        <p className="text-blue-100 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
-                            From airport pickups to luxury city rides, we offer a full range of
-                            professional transfer solutions across Canada — tailored to your
-                            schedule, group size, and comfort level.
+                        <p className="text-blue-100 text-base sm:text-lg leading-relaxed max-w-4xl mb-3">
+                            Canada Coach Charters offers reliable and comfortable transfers for individuals, groups, and organisations. Our team simplifies every trip, making it safe and well-organised, whether you are travelling from the airport, hotel, venue, or another city.
+                        </p>
+                        <p className="text-blue-100 text-base sm:text-lg leading-relaxed max-w-4xl mb-8">
+                            Choose from private shuttle buses or luxury coach transfers. We offer flexible options around your schedule, group size, luggage, and destination.
                         </p>
 
                         <button
@@ -186,14 +187,13 @@ export default function TransfersPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
                         <span className="inline-block text-xs font-semibold text-blue-600 border border-blue-200 bg-blue-50 rounded-full px-4 py-1.5 mb-4">
-                            What We Offer
+                            Comfortable Private Transfers for Every Occasion
                         </span>
                         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-3">
-                            Every Transfer, Covered
+                            Transfer Transportation for Every Group
                         </h2>
-                        <p className="text-gray-500 text-sm leading-relaxed max-w-lg mx-auto">
-                            Whether you&apos;re travelling solo, with family, or coordinating a
-                            large group — we have a transfer option designed for you.
+                        <p className="text-gray-500 text-sm leading-relaxed max-w-3xl mx-auto">
+                            Our service is ideal for groups that need dependable transport and a stress-free experience. We keep your itinerary on time.
                         </p>
                     </div>
 
@@ -237,6 +237,85 @@ export default function TransfersPage() {
                                 </button>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="py-16 lg:py-24 px-2 sm:px-8 lg:px-10 bg-slate-50">
+                <div className="max-w-7xl mx-auto grid gap-8 lg:grid-cols-2">
+                    <article className="rounded-3xl border border-slate-200 bg-white p-7 sm:p-9 shadow-sm">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Airport Transfer Services</h2>
+                        <p className="text-slate-600 leading-relaxed">
+                            Airport arrivals and departures should be smooth and stress-free. Canada Coach Charters offers private airport transfers for groups travelling through Toronto Pearson and other regional airports. Our airport transfers serve tour groups, corporate teams, students, wedding guests, sports teams, and families.
+                        </p>
+                    </article>
+
+                    <article className="rounded-3xl border border-slate-200 bg-white p-7 sm:p-9 shadow-sm">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Hotel and Event Transfers</h2>
+                        <p className="text-slate-600 leading-relaxed">
+                            Need to move guests between hotels, venues, restaurants, or attractions? Our transfer services make group travel easy. We work with event planners, coordinators, and corporate teams, providing organised shuttle transportation for single or multi-stop trips.
+                        </p>
+                    </article>
+
+                    <article className="rounded-3xl border border-slate-200 bg-white p-7 sm:p-9 shadow-sm">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Baggage Transfer Services</h2>
+                        <p className="text-slate-600 leading-relaxed">
+                            We transport luggage separately or securely between locations, ideal for tour groups, airport arrivals, hotels, conferences, sports teams, and long-distance trips. Our team coordinates baggage handling and timing to keep your trip on schedule.
+                        </p>
+                    </article>
+
+                    <article className="rounded-3xl border border-slate-200 bg-white p-7 sm:p-9 shadow-sm">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Luxury Coach and Shuttle Transfer Options</h2>
+                        <p className="text-slate-600 leading-relaxed">
+                            Groups have different travel needs. That is why we offer vehicles from shuttle service to luxury coaches. Our fleet serves groups of all sizes, and we select vehicles for comfort, space, and smooth travel.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <section className="py-16 lg:py-24 px-2 sm:px-8 lg:px-10 bg-white">
+                <div className="max-w-7xl mx-auto grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+                    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 sm:p-10 shadow-sm">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Why Choose Canada Coach Charters?</h2>
+                        <p className="text-slate-600 leading-relaxed mb-6">
+                            We focus on dependable service, coordination, and passenger comfort. When you book with us, your transportation is tailored to your schedule and destination.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {[
+                                "Private group transportation",
+                                "Professional drivers",
+                                "Comfortable passenger vehicles",
+                                "Flexible pickup and drop-off options",
+                                "Airport, hotel, event, and city transfers",
+                                "Support for luggage and baggage needs",
+                                "Transportation for small and large groups",
+                                "Service in Toronto and surrounding areas",
+                            ].map((item) => (
+                                <div key={item} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700">
+                                    {item}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="rounded-3xl bg-gradient-to-br from-blue-800 to-blue-600 p-7 sm:p-10 text-white shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4">Transfer Services for Businesses and Groups</h3>
+                        <p className="text-blue-100 leading-relaxed mb-5">
+                            We serve companies, schools, agencies, sports organisations, wedding planners, and private groups. Need a one-time or recurring transfer? We will build a plan for your route, timing, and passenger count.
+                        </p>
+                        <p className="text-blue-100 leading-relaxed mb-6">
+                            Planning group transportation in Toronto or Ontario? We are ready to help with transfer services tailored to your trip.
+                        </p>
+                        <button
+                            type="button"
+                            onClick={() => openTransferQuote("Book a Private Transfer")}
+                            className="inline-flex items-center justify-between gap-3 pl-5 pr-1.5 py-2 rounded-full bg-white hover:bg-blue-50 transition-colors font-semibold text-blue-800 text-sm"
+                        >
+                            Book a Private Transfer
+                            <span className="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center shrink-0">
+                                <ChevronRight className="w-4 h-4 text-white" />
+                            </span>
+                        </button>
                     </div>
                 </div>
             </section>

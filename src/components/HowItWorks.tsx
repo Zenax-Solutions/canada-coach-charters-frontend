@@ -135,7 +135,7 @@ export default function HowItWorks() {
                 isOpen={quoteOpen}
                 onClose={() => setQuoteOpen(false)}
                 title="Get Your Quote"
-                serviceType="charter"
+                serviceType="transfer"
                 context="Quote request from How It Works section"
             />
         </>

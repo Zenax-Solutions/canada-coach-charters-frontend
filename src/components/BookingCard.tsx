@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { forwardRef, useEffect, useState, type ButtonHTMLAttributes } from "react";
+import { forwardRef, useEffect, useRef, useState, type ButtonHTMLAttributes } from "react";
 import { MapPin, Calendar, Users, Phone, Mail, ArrowUpRight, AlertCircle, Loader2, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarPicker } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { storageUrl, submitQuote } from "@/lib/api";
-import { geocodeFirstGtaLocation, getDrivingRouteMetrics, searchGtaLocations, type GeoPoint, type RouteMetrics } from "@/lib/location";
+import { geocodeFirstGtaLocation, getDrivingRouteMetricsToDropoff, searchGtaLocations, type GeoPoint, type RouteMetrics } from "@/lib/location";
 
 type ServiceType = "charter" | "transfer" | "tour";
 type TripType = "inter-city" | "inter-province";
@@ -96,11 +96,14 @@ export default function BookingCard({
     ctaLabel = "Request Pricing",
     variant = "section",
     mode = "quote",
-    initialServiceType = "charter",
+    initialServiceType = "transfer",
     quoteContext,
     initialTourSlug,
 }: BookingCardProps) {
     const searchParams = useSearchParams();
+    const dropoffInputRef = useRef<HTMLInputElement | null>(null);
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
 
     /* ── Booking mode state ── */
     const [tripType, setTripType] = useState<TripType>("inter-city");
@@ -123,7 +126,7 @@ export default function BookingCard({
     const [distanceLoading, setDistanceLoading] = useState(false);
     const [date, setDate] = useState<Date | undefined>();
     const [passengers, setPassengers] = useState("");
-    const [transferOption, setTransferOption] = useState("");
+    const [transferOption, setTransferOption] = useState("Private Transfer");
     const [transferTripType, setTransferTripType] = useState<TransferTripType>("round-trip");
     const [useVehicleAtDestination, setUseVehicleAtDestination] = useState<"yes" | "no">("yes");
     const [pickupTime, setPickupTime] = useState("");
@@ -260,14 +263,14 @@ export default function BookingCard({
     }, [mode, preferredTourSlug, tourOptions]);
 
     useEffect(() => {
-        if (!pickupPoint || !dropoffPoint || mode !== "quote") {
+        if (!dropoffPoint || mode !== "quote") {
             setRouteMetrics(null);
             return;
         }
 
         let mounted = true;
         setDistanceLoading(true);
-        getDrivingRouteMetrics(pickupPoint, dropoffPoint)
+        getDrivingRouteMetricsToDropoff(dropoffPoint)
             .then((metrics) => {
                 if (mounted) setRouteMetrics(metrics);
             })
@@ -278,7 +281,7 @@ export default function BookingCard({
         return () => {
             mounted = false;
         };
-    }, [pickupPoint, dropoffPoint, mode]);
+    }, [dropoffPoint, mode]);
 
     // Auto-reset form after successful submission
     useEffect(() => {
@@ -296,7 +299,7 @@ export default function BookingCard({
                     setDropoffPoint(null);
                     setDate(undefined);
                     setPassengers("");
-                    setTransferOption("");
+                    setTransferOption("Private Transfer");
                     setTransferTripType("round-trip");
                     setUseVehicleAtDestination("yes");
                     setPickupTime("");
@@ -329,6 +332,8 @@ export default function BookingCard({
         setPickupPoint(suggestion);
         setPickupSuggestions([]);
         setPickupActiveIndex(-1);
+        // Move users directly to destination entry after selecting pickup.
+        requestAnimationFrame(() => dropoffInputRef.current?.focus());
     };
 
     const selectDropoffSuggestion = (suggestion: GeoPoint) => {
@@ -408,9 +413,9 @@ export default function BookingCard({
             }
 
             let route: RouteMetrics | null = null;
-            if (mode === "quote" && serviceType !== "tour" && resolvedPickup && resolvedDropoff) {
+            if (mode === "quote" && serviceType !== "tour" && resolvedDropoff) {
                 try {
-                    route = await getDrivingRouteMetrics(resolvedPickup, resolvedDropoff);
+                    route = await getDrivingRouteMetricsToDropoff(resolvedDropoff);
                 } catch {
                     route = null;
                 }
@@ -467,7 +472,9 @@ export default function BookingCard({
                 "bg-white rounded-2xl p-6 w-full",
                 variant === "hero"
                     ? "shadow-2xl h-[500px] max-h-[500px] flex flex-col"
-                    : "shadow-lg border border-gray-100"
+                    : mode === "quote"
+                        ? "shadow-lg border border-gray-100 h-[560px] max-h-[560px] flex flex-col"
+                        : "shadow-lg border border-gray-100"
             )}
         >
             {/* ── Tabs ── */}
@@ -503,7 +510,12 @@ export default function BookingCard({
                 </div>
             )}
 
-            <div className={cn("space-y-4", variant === "hero" && "min-h-0 flex-1 overflow-y-auto pr-1") }>
+            <div
+                className={cn(
+                    "space-y-4",
+                    (variant === "hero" || (variant === "section" && mode === "quote")) && "min-h-0 flex-1 overflow-y-auto pr-1"
+                )}
+            >
                 {mode === "booking" ? (
                     <>
                         {/* From */}
@@ -549,7 +561,7 @@ export default function BookingCard({
                                             mode="single"
                                             selected={departure}
                                             onSelect={(d) => { setDeparture(d); clearErr("departure"); }}
-                                            disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                                            disabled={(d) => d < startOfToday}
                                         />
                                     </PopoverContent>
                                 </Popover>
@@ -566,7 +578,7 @@ export default function BookingCard({
                                             mode="single"
                                             selected={returnDate}
                                             onSelect={setReturnDate}
-                                            disabled={(d) => departure ? d < departure : d < new Date(new Date().setHours(0, 0, 0, 0))}
+                                            disabled={(d) => departure ? d < departure : d < startOfToday}
                                         />
                                     </PopoverContent>
                                 </Popover>
@@ -579,56 +591,36 @@ export default function BookingCard({
                             <>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1.5">Trip Type</label>
-                                    <div className="flex items-center gap-4 rounded-xl border border-gray-200 bg-gray-50/80 px-3 py-2.5">
-                                        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-                                            <input
-                                                type="radio"
-                                                name="transferTripType"
-                                                checked={transferTripType === "round-trip"}
-                                                onChange={() => setTransferTripType("round-trip")}
-                                            />
-                                            Round Trip
-                                        </label>
-                                        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-                                            <input
-                                                type="radio"
-                                                name="transferTripType"
-                                                checked={transferTripType === "one-way"}
-                                                onChange={() => {
-                                                    setTransferTripType("one-way");
-                                                    setDepartureDate(undefined);
-                                                    setDepartureTime("");
-                                                    clearErr("departureDate");
-                                                    clearErr("departureTime");
-                                                }}
-                                            />
-                                            One Way
-                                        </label>
-                                    </div>
+                                    <select
+                                        value={transferTripType}
+                                        onChange={(e) => {
+                                            const value = e.target.value as TransferTripType;
+                                            setTransferTripType(value);
+
+                                            if (value === "one-way") {
+                                                setDepartureDate(undefined);
+                                                setDepartureTime("");
+                                                clearErr("departureDate");
+                                                clearErr("departureTime");
+                                            }
+                                        }}
+                                        className="w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm"
+                                    >
+                                        <option value="round-trip">Round Trip</option>
+                                        <option value="one-way">One Way</option>
+                                    </select>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1.5">Do you plan to use the vehicle at the destination?</label>
-                                    <div className="flex items-center gap-4 rounded-xl border border-gray-200 bg-gray-50/80 px-3 py-2.5">
-                                        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-                                            <input
-                                                type="radio"
-                                                name="useVehicleAtDestination"
-                                                checked={useVehicleAtDestination === "yes"}
-                                                onChange={() => setUseVehicleAtDestination("yes")}
-                                            />
-                                            Yes
-                                        </label>
-                                        <label className="inline-flex items-center gap-2 text-sm text-gray-700">
-                                            <input
-                                                type="radio"
-                                                name="useVehicleAtDestination"
-                                                checked={useVehicleAtDestination === "no"}
-                                                onChange={() => setUseVehicleAtDestination("no")}
-                                            />
-                                            No
-                                        </label>
-                                    </div>
+                                    <select
+                                        value={useVehicleAtDestination}
+                                        onChange={(e) => setUseVehicleAtDestination(e.target.value as "yes" | "no")}
+                                        className="w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm"
+                                    >
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
                                 </div>
 
                                 <div>
@@ -756,18 +748,19 @@ export default function BookingCard({
                                             className={cn("pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80", errors.pickup && "border-red-400")}
                                         />
                                         {pickupSuggestions.length > 0 && (
-                                            <div className="absolute z-30 mt-1 w-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+                                            <div className="absolute z-30 mt-1 w-full max-h-64 overflow-y-auto overscroll-contain rounded-xl border border-gray-200 bg-white shadow-lg">
                                                 {pickupSuggestions.map((s, index) => (
                                                     <button
                                                         key={`${s.lat}-${s.lon}-${s.label}`}
                                                         type="button"
                                                         onClick={() => selectPickupSuggestion(s)}
                                                         className={cn(
-                                                            "block w-full border-b border-gray-100 px-3 py-2 text-left text-xs text-gray-700 hover:bg-blue-50 last:border-b-0",
+                                                            "flex w-full items-start gap-2 border-b border-gray-100 px-3 py-2.5 text-left text-xs text-gray-700 hover:bg-blue-50 last:border-b-0",
                                                             index === pickupActiveIndex && "bg-blue-50 text-blue-700"
                                                         )}
                                                     >
-                                                        {s.label}
+                                                        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
+                                                        <span>{s.label}</span>
                                                     </button>
                                                 ))}
                                             </div>
@@ -782,6 +775,7 @@ export default function BookingCard({
                                     <div className="relative">
                                         <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                                         <Input
+                                            ref={dropoffInputRef}
                                             value={dropoff}
                                             onChange={(e) => {
                                                 setDropoff(e.target.value);
@@ -817,18 +811,19 @@ export default function BookingCard({
                                             className={cn("pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80", errors.dropoff && "border-red-400")}
                                         />
                                         {dropoffSuggestions.length > 0 && (
-                                            <div className="absolute z-30 mt-1 w-full overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+                                            <div className="absolute z-30 mt-1 w-full max-h-64 overflow-y-auto overscroll-contain rounded-xl border border-gray-200 bg-white shadow-lg">
                                                 {dropoffSuggestions.map((s, index) => (
                                                     <button
                                                         key={`${s.lat}-${s.lon}-${s.label}`}
                                                         type="button"
                                                         onClick={() => selectDropoffSuggestion(s)}
                                                         className={cn(
-                                                            "block w-full border-b border-gray-100 px-3 py-2 text-left text-xs text-gray-700 hover:bg-blue-50 last:border-b-0",
+                                                            "flex w-full items-start gap-2 border-b border-gray-100 px-3 py-2.5 text-left text-xs text-gray-700 hover:bg-blue-50 last:border-b-0",
                                                             index === dropoffActiveIndex && "bg-blue-50 text-blue-700"
                                                         )}
                                                     >
-                                                        {s.label}
+                                                        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gray-400" />
+                                                        <span>{s.label}</span>
                                                     </button>
                                                 ))}
                                             </div>
@@ -853,6 +848,7 @@ export default function BookingCard({
                                                 mode="single"
                                                 selected={date}
                                                 onSelect={(d) => { setDate(d); clearErr("date"); }}
+                                                disabled={(d) => d < startOfToday}
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -866,7 +862,7 @@ export default function BookingCard({
                                                 mode="single"
                                                 selected={date}
                                                 onSelect={(d) => { setDate(d); clearErr("date"); }}
-                                                disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                                                disabled={(d) => d < startOfToday}
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -912,6 +908,7 @@ export default function BookingCard({
                                                 mode="single"
                                                 selected={departureDate}
                                                 onSelect={(d) => { setDepartureDate(d); clearErr("departureDate"); }}
+                                                disabled={(d) => d < (date ?? startOfToday)}
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -991,17 +988,15 @@ export default function BookingCard({
                                     </div>
                                     <FieldError msg={errors.mobile} />
                                 </div>
-                                {serviceType === "tour" && (
-                                    <div>
-                                        <label className="block text-xs font-medium text-gray-500 mb-1">Note <span className="text-gray-400">(optional)</span></label>
-                                        <textarea
-                                            value={note}
-                                            onChange={(e) => setNote(e.target.value)}
-                                            placeholder="Any extra details for your destination quote"
-                                            className="w-full min-h-24 rounded-xl border border-gray-200 bg-gray-50/80 p-3 text-sm outline-none focus:border-blue-500"
-                                        />
-                                    </div>
-                                )}
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-500 mb-1">Note <span className="text-gray-400">(optional)</span></label>
+                                    <textarea
+                                        value={note}
+                                        onChange={(e) => setNote(e.target.value)}
+                                        placeholder="Any extra details for your quote"
+                                        className="w-full min-h-24 rounded-xl border border-gray-200 bg-gray-50/80 p-3 text-sm outline-none focus:border-blue-500"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </>

@@ -14,46 +14,52 @@ import {
     Compass,
 } from "lucide-react";
 
+export const metadata = {
+    title: "Rental Bus Services in Toronto | Private School, Church & Group Charters in the GTA",
+    description:
+        "Canada Coach Charters provides reliable bus rental and charter services in Toronto and the GTA for private schools, churches, corporate groups, weddings, airport transfers, and private travel. Approved for Toronto District School Board and York Region District School Board transportation.",
+};
+
 const services = [
     {
-        title: "Corporate Travel Service",
+        title: "Private School Bus Rentals in the GTA",
         description:
-            "Corporate Travel Services are specialized solutions designed to meet the unique travel needs of businesses and their employees. Whether it is arranging flights, booking accommodations, or managing itineraries, these services are tailored to simplify the complexities associated with corporate travel.",
+            "Canada Coach Charters proudly serves private schools across the GTA, offering dependable bus rentals for field trips, athletics, academics, daily transport, special events, and student travel. Our transportation is planned for safety, punctuality, and clear communication.",
         image: "/services-page/corporate-travel.jpg",
         icon: Briefcase,
     },
     {
-        title: "Wedding & Engagement",
+        title: "Church Bus Rentals in the GTA",
         description:
-            "Weddings and engagements are joyous occasions that mark the beginning of a lifelong journey for couples. These events are filled with love, traditions, and the promise of a shared future. From the romantic proposal to the grand celebration of a wedding, each step is a unique and meaningful part of the couple's story.",
+            "We provide church bus rental services for congregations, ministries, youth groups, seniors' groups, retreats, conferences, community events, and special worship gatherings across the GTA.",
         image: "/services-page/buying-an-engagement.jpg",
         icon: Heart,
     },
     {
-        title: "School Rental Service",
+        title: "Corporate Bus Rentals",
         description:
-            "Safe and reliable school bus rentals for field trips, ensuring comfortable transportation for students and teachers.",
+            "Canada Coach Charters offers professional corporate transportation for meetings, conferences, staff events, team-building outings, trade shows, conventions, and business travel.",
         image: "/services-page/school-rental-services.jpg",
         icon: GraduationCap,
     },
     {
-        title: "Airport Shuttle Service",
+        title: "Wedding Transportation",
         description:
-            "Airport shuttle services play a crucial role in enhancing the overall travel experience by providing convenient and reliable transportation to and from airports. These services are tailored to meet the needs of travelers, offering a cost-effective and efficient alternative to traditional transportation methods.",
+            "Make your wedding easier with a private bus rental for guests, parties, and family. We provide rides to ceremonies, receptions, hotels, photo sites, and after-events.",
         image: "/services-page/Airport-Shuttle-Service.jpg",
         icon: Plane,
     },
     {
-        title: "Private Travel Service",
+        title: "Airport Shuttle Services",
         description:
-            "Private travel services redefine the conventional travel experience by providing exclusive, tailored, and luxurious options for individuals or groups. Whether it is flying on a private jet, cruising in a luxury yacht, or enjoying a bespoke vacation, these services prioritize personalized attention and high-end amenities.",
+            "We offer airport and group shuttle transfers to Toronto Pearson International Airport, Billy Bishop Toronto City Airport, hotels, offices, schools, churches, and private addresses.",
         image: "/services-page/private-travel.jpg",
         icon: ShieldCheck,
     },
     {
-        title: "Tours & Excursions",
+        title: "Private Group Travel",
         description:
-            "Tours and excursions are immersive travel experiences that allow individuals to discover the beauty and uniqueness of different destinations. From cultural explorations to outdoor adventures, these activities provide an enriching way to connect with new places, people, and traditions.",
+            "Planning a custom trip? We provide private rentals for family events, tours, sports, community, clubs, seniors, and special occasions across Toronto, Ontario, and beyond.",
         image: "/services-page/Tours-Excursions.jpg",
         icon: Compass,
     },
@@ -68,7 +74,7 @@ export default function ServicesPage() {
                 <section className="relative pt-36 pb-20 px-2 sm:px-8 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: "url('/page-header.jpg')" }}
+                        style={{ backgroundImage: "url('/page-header/56-psngr-bnr2.jpg')" }}
                     />
                     <div className="absolute inset-0 bg-black/55" />
                     <div
@@ -90,15 +96,17 @@ export default function ServicesPage() {
                         </nav>
 
                         <span className="inline-block text-xs font-semibold text-blue-200 border border-blue-500 bg-blue-600/50 rounded-full px-4 py-1.5 mb-5">
-                            Service Categories
+                            Rental Bus Services in Toronto and the GTA
                         </span>
 
                         <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-4 max-w-2xl">
-                            Our Services
+                            Rental Bus Services in Toronto and the GTA
                         </h1>
                         <p className="text-blue-100 text-base sm:text-lg leading-relaxed max-w-3xl">
-                            Tailored transportation solutions for corporate travel, events, school trips,
-                            airport transfers, private journeys, and memorable excursions.
+                            Canada Coach Charters offers safe, affordable bus rentals in Toronto and the GTA. Our team ensures your school, church, corporate, wedding, airport, or group trip is simple, comfortable, and organized.
+                        </p>
+                        <p className="text-blue-100 text-base sm:text-lg leading-relaxed max-w-3xl mt-3">
+                            We serve all group sizes with charter bus solutions tailored to your schedule, destination, and needs.
                         </p>
                     </div>
                 </section>
@@ -108,14 +116,13 @@ export default function ServicesPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12">
                         <span className="inline-block text-xs font-semibold text-blue-600 border border-blue-200 bg-blue-50 rounded-full px-4 py-1.5 mb-4">
-                            From Archived Services Page
+                            Rental Bus Services in Toronto
                         </span>
                         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-3">
-                            Service Options For Every Trip
+                            Service Options for Every Trip
                         </h2>
                         <p className="text-gray-500 text-sm leading-relaxed max-w-2xl mx-auto">
-                            These service categories are based on the original Canada Coach Charters
-                            services listing and adapted to the current site experience.
+                            Explore the charter services Canada Coach Charters provides across Toronto, York Region, and the GTA.
                         </p>
                     </div>
 
@@ -158,6 +165,59 @@ export default function ServicesPage() {
                                 </div>
                             </article>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="py-16 lg:py-24 px-2 sm:px-8 lg:px-10 bg-slate-50">
+                <div className="max-w-7xl mx-auto grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
+                    <div className="rounded-3xl border border-slate-200 bg-white p-7 sm:p-10 shadow-sm">
+                        <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold text-blue-700 mb-4">
+                            Why Choose Canada Coach Charters?
+                        </span>
+                        <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-4">
+                            Trusted by Schools, Churches, Businesses, and Families Across the GTA
+                        </h2>
+                        <p className="text-slate-600 leading-relaxed mb-6">
+                            Canada Coach Charters is trusted by schools, churches, businesses, and families across the GTA. We provide safe, dependable transportation, clean vehicles, and professional coordination.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {[
+                                "Private schools in the GTA",
+                                "Churches in the GTA",
+                                "Toronto District School Board trips",
+                                "York Region District School Board trips",
+                                "Corporate transportation",
+                                "Wedding shuttles",
+                                "Airport transfers",
+                                "Private group charters",
+                                "Field trips and student events",
+                                "Community and senior group travel",
+                            ].map((item) => (
+                                <div key={item} className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
+                                    {item}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="rounded-3xl bg-gradient-to-br from-blue-800 to-blue-600 p-7 sm:p-10 text-white shadow-lg">
+                        <h3 className="text-2xl font-bold mb-4">Book a Charter Bus in Toronto</h3>
+                        <p className="text-blue-100 leading-relaxed mb-6">
+                            Canada Coach Charters makes group travel easy. Contact us for a quote for rentals in Toronto, York Region, and the GTA.
+                        </p>
+                        <p className="text-blue-100 leading-relaxed mb-6">
+                            For school, church, corporate, wedding, airport, or group trips, our team is ready to help plan a safe, reliable ride.
+                        </p>
+                        <Link
+                            href="/contact"
+                            className="inline-flex items-center justify-between gap-3 pl-5 pr-1.5 py-2 rounded-full bg-white hover:bg-blue-50 transition-colors font-semibold text-blue-800 text-sm"
+                        >
+                            Request a Quote
+                            <span className="w-9 h-9 rounded-full bg-blue-700 flex items-center justify-center shrink-0">
+                                <ChevronRight className="w-4 h-4 text-white" />
+                            </span>
+                        </Link>
                     </div>
                 </div>
             </section>

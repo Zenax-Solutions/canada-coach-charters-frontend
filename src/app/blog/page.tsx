@@ -48,7 +48,7 @@ export default async function BlogPage() {
                 <section className="relative pt-36 pb-20 px-2 sm:px-8 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: "url('/page-header.jpg')" }}
+                        style={{ backgroundImage: "url('/page-header/gallery-3.webp')" }}
                     />
                     <div className="absolute inset-0 bg-black/55" />
                     <div

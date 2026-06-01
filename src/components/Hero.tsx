@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { CalendarIcon, ArrowUpRight, Bus, MapPin, Users, Mail, Phone, Loader2, Star, ShieldCheck, Clock3, CheckCircle2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import QuoteModal from "@/components/QuoteModal";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { storageUrl, submitQuote } from "@/lib/api";
-import { geocodeFirstGtaLocation, getDrivingRouteMetrics, searchGtaLocations, type GeoPoint, type RouteMetrics } from "@/lib/location";
+import { geocodeFirstGtaLocation, getDrivingRouteMetricsToDropoff, searchGtaLocations, type GeoPoint, type RouteMetrics } from "@/lib/location";
 
 const flipWords = ["Travel", "Adventure", "Discovery", "Freedom"];
 
@@ -37,8 +37,12 @@ interface ToursResponse {
 }
 
 export default function Hero() {
+    const dropoffInputRef = useRef<HTMLInputElement | null>(null);
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
     const [videoFailed, setVideoFailed] = useState(false);
-    const [serviceType, setServiceType] = useState<ServiceType>("charter");
+    const [serviceType, setServiceType] = useState<ServiceType>("transfer");
     const [isLoading, setIsLoading] = useState(false);
     const [tripDate, setTripDate] = useState<Date | undefined>();
     const [wordIndex, setWordIndex] = useState(0);
@@ -53,7 +57,7 @@ export default function Hero() {
     const [routeMetrics, setRouteMetrics] = useState<RouteMetrics | null>(null);
     const [distanceLoading, setDistanceLoading] = useState(false);
     const [passengers, setPassengers] = useState("");
-    const [transferOption, setTransferOption] = useState("");
+    const [transferOption, setTransferOption] = useState("Private Transfer");
     const [transferTripType, setTransferTripType] = useState<TransferTripType>("round-trip");
     const [useVehicleAtDestination, setUseVehicleAtDestination] = useState<"yes" | "no">("yes");
     const [pickupTime, setPickupTime] = useState("");
@@ -111,8 +115,8 @@ export default function Hero() {
             }
 
             const route =
-                serviceType !== "tour" && resolvedPickup && resolvedDropoff
-                    ? await getDrivingRouteMetrics(resolvedPickup, resolvedDropoff)
+                serviceType !== "tour" && resolvedDropoff
+                    ? await getDrivingRouteMetricsToDropoff(resolvedDropoff)
                     : null;
 
             const contextualDetails = [
@@ -165,7 +169,7 @@ export default function Hero() {
 
         setFormError(null);
         if (key !== "transfer") {
-            setTransferOption("");
+            setTransferOption("Private Transfer");
             setTransferTripType("round-trip");
             setUseVehicleAtDestination("yes");
             setPickupTime("");
@@ -286,14 +290,14 @@ export default function Hero() {
     }, []);
 
     useEffect(() => {
-        if (serviceType === "tour" || !pickupPoint || !dropoffPoint) {
+        if (serviceType === "tour" || !dropoffPoint) {
             setRouteMetrics(null);
             return;
         }
 
         let mounted = true;
         setDistanceLoading(true);
-        getDrivingRouteMetrics(pickupPoint, dropoffPoint)
+        getDrivingRouteMetricsToDropoff(dropoffPoint)
             .then((metrics) => {
                 if (mounted) setRouteMetrics(metrics);
             })
@@ -304,7 +308,7 @@ export default function Hero() {
         return () => {
             mounted = false;
         };
-    }, [pickupPoint, dropoffPoint, serviceType]);
+    }, [dropoffPoint, serviceType]);
 
     useEffect(() => {
         if (!submitted) return;
@@ -322,7 +326,7 @@ export default function Hero() {
             setDropoffActiveIndex(-1);
             setTripDate(undefined);
             setPassengers("");
-            setTransferOption("");
+            setTransferOption("Private Transfer");
             setTransferTripType("round-trip");
             setUseVehicleAtDestination("yes");
             setPickupTime("");
@@ -335,7 +339,7 @@ export default function Hero() {
             setMobile("");
             setRouteMetrics(null);
             setDistanceLoading(false);
-            setServiceType("charter");
+            setServiceType("transfer");
         }, 5000);
 
         return () => window.clearTimeout(timer);
@@ -346,6 +350,8 @@ export default function Hero() {
         setPickupPoint(suggestion);
         setPickupSuggestions([]);
         setPickupActiveIndex(-1);
+        // Move users directly to destination entry after selecting pickup.
+        requestAnimationFrame(() => dropoffInputRef.current?.focus());
     };
 
     const selectDropoffSuggestion = (suggestion: GeoPoint) => {
@@ -677,6 +683,7 @@ export default function Hero() {
                                                 <div className="relative">
                                                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
                                                     <Input
+                                                        ref={dropoffInputRef}
                                                         placeholder={serviceType === "transfer" ? "Enter destination location" : "Enter drop-off location"}
                                                         value={dropoff}
                                                         onChange={e => {
@@ -757,6 +764,7 @@ export default function Hero() {
                                                     mode="single"
                                                     selected={tripDate}
                                                     onSelect={setTripDate}
+                                                    disabled={(d) => d < startOfToday}
                                                     autoFocus
                                                 />
                                             </PopoverContent>
@@ -810,6 +818,7 @@ export default function Hero() {
                                                         mode="single"
                                                         selected={departureDate}
                                                         onSelect={setDepartureDate}
+                                                        disabled={(d) => d < (tripDate ?? startOfToday)}
                                                         autoFocus
                                                     />
                                                 </PopoverContent>
@@ -942,7 +951,7 @@ export default function Hero() {
                 isOpen={quoteOpen}
                 onClose={() => setQuoteOpen(false)}
                 title="Get a Quote"
-                serviceType="charter"
+                serviceType="transfer"
                 context="Quote request from Hero section"
             />
         </section>

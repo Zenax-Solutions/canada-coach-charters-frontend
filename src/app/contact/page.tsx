@@ -44,22 +44,22 @@ export default function ContactPage() {
     const socialLinks = [
         {
             label: "Facebook",
-            href: "https://web.archive.org/web/20250316064900/https://www.facebook.com/people/Canada-Coach-Charters/100088672182959/",
+            href: "https://www.facebook.com/people/Canada-Coach-Charters/100088672182959/",
             icon: FaFacebookF,
         },
         {
             label: "Instagram",
-            href: "https://web.archive.org/web/20250316064900/https://www.instagram.com/canadacoachcharters/",
+            href: "https://www.instagram.com/canadacoachcharters/",
             icon: FaInstagram,
         },
         {
             label: "LinkedIn",
-            href: "https://web.archive.org/web/20250316064900/https://www.linkedin.com/company/canada-coach-charterss",
+            href: "https://www.linkedin.com/company/canada-coach-charterss",
             icon: FaLinkedinIn,
         },
         {
             label: "X (Twitter)",
-            href: "https://web.archive.org/web/20250316064900/https://twitter.com/coachcharterss",
+            href: "https://x.com/coachcharterss",
             icon: FaXTwitter,
         },
     ];
@@ -72,7 +72,7 @@ export default function ContactPage() {
                 <section className="relative pt-36 pb-20 px-2 sm:px-8 lg:px-10">
                     <div
                         className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: "url('/page-header.jpg')" }}
+                        style={{ backgroundImage: "url('/page-header/cr=t_0,w_100.webp')" }}
                     />
                     <div className="absolute inset-0 bg-black/55" />
                     <div
@@ -360,7 +360,7 @@ export default function ContactPage() {
                         ))}
                     </div>
                     <p className="text-sm text-slate-600">
-                        Providing charter coaches, airport transfers, tours, and group transportation throughout Ontario and across Canada.
+                        Providing charter coaches, airport transfers, tours, and group transportation throughout Canada and to USA.
                     </p>
                 </div>
             </section>
@@ -398,7 +398,7 @@ export default function ContactPage() {
                         </details>
                         <details className="rounded-xl border border-slate-200 bg-white p-5">
                             <summary className="font-semibold cursor-pointer">Do you serve areas outside Toronto?</summary>
-                            <p className="text-sm text-slate-600 mt-2">Yes. We provide transportation throughout Ontario and across Canada.</p>
+                            <p className="text-sm text-slate-600 mt-2">Yes. We provide transportation throughout Canada and to USA</p>
                         </details>
                     </div>
                 </div>
@@ -418,7 +418,7 @@ export default function ContactPage() {
                             <a href="tel:+16478464140" className="inline-flex items-center justify-center rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors">Call Now</a>
                         </div>
                         <p className="text-xs sm:text-sm text-blue-100">
-                            Trusted for charter coach buses, airport transfers, tours, corporate transportation, and group travel across Ontario.
+                            Trusted for charter coach buses, airport transfers, tours, corporate transportation, and group travel across Ontario and to USA.
                         </p>
                     </div>
                 </div>
