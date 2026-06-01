@@ -904,19 +904,17 @@ export default function Hero() {
                                     </div>
                                 </div>
 
-                                {serviceType === "tour" && (
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                            Note <span className="text-gray-400">(optional)</span>
-                                        </label>
-                                        <textarea
-                                            value={note}
-                                            onChange={e => setNote(e.target.value)}
-                                            placeholder="Any extra details for your tour request"
-                                            className="w-full min-h-20 rounded-xl border border-gray-200 bg-gray-50/80 p-3 text-sm outline-none focus:border-blue-500"
-                                        />
-                                    </div>
-                                )}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                        Note <span className="text-gray-400">(optional)</span>
+                                    </label>
+                                    <textarea
+                                        value={note}
+                                        onChange={e => setNote(e.target.value)}
+                                        placeholder="Any extra details for your request"
+                                        className="w-full min-h-20 rounded-xl border border-gray-200 bg-gray-50/80 p-3 text-sm outline-none focus:border-blue-500"
+                                    />
+                                </div>
 
                                 {/* CTA button */}
                                 {submitted ? (
