@@ -14,6 +14,13 @@ interface ApiGalleryItem {
     album: { name: string } | null;
 }
 
+type GalleryGridItem = {
+    src: string;
+    mediaType: "image" | "video";
+    title: string;
+    category: string;
+};
+
 async function getGalleryItems(): Promise<ApiGalleryItem[]> {
     try {
         const res = await fetch(
@@ -45,7 +52,7 @@ export default async function GalleryPage() {
                 category: item.album?.name ?? "Gallery",
             };
         })
-        .filter((item) => Boolean(item.src));
+        .filter((item): item is GalleryGridItem => typeof item.src === "string" && item.src.length > 0);
 
     return (<div className="min-h-screen bg-white p-1 sm:p-4">
         <div className="relative rounded-3xl overflow-hidden">
