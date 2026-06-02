@@ -9,7 +9,8 @@ import { storageUrl } from "@/lib/api";
 interface ApiGalleryItem {
     id: number;
     title: string | null;
-    image_path: string;
+    image_path: string | null;
+    video_path: string | null;
     album: { name: string } | null;
 }
 
@@ -33,9 +34,13 @@ export default async function GalleryPage() {
     // Normalise to a flat list for the grid
     const items = apiItems
         .map((item) => {
-            const src = storageUrl(item.image_path) ?? item.image_path;
+            const imageSrc = storageUrl(item.image_path) ?? item.image_path;
+            const videoSrc = storageUrl(item.video_path) ?? item.video_path;
+            const mediaType = videoSrc ? "video" : "image";
+            const src = mediaType === "video" ? videoSrc : imageSrc;
             return {
                 src,
+                mediaType,
                 title: item.title ?? "Gallery Image",
                 category: item.album?.name ?? "Gallery",
             };
@@ -72,7 +77,7 @@ export default async function GalleryPage() {
 
                     <span className="inline-flex items-center gap-2 text-xs font-semibold text-blue-200 border border-blue-500 bg-blue-600/50 rounded-full px-4 py-1.5 mb-5">
                         <Camera className="w-3.5 h-3.5" />
-                        Photo Gallery
+                        Photo and Video Gallery
                     </span>
 
                     <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-4 max-w-2xl">
@@ -102,42 +107,57 @@ export default async function GalleryPage() {
 
                 {items.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {items.map((item, i) => (
-                            <Link
-                                key={`${item.src}-${i}`}
-                                href={item.src}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300"
-                            >
-                                <div className="relative h-56 w-full bg-slate-100">
-                                    <Image
-                                        src={item.src}
-                                        alt={item.title}
-                                        fill
-                                        className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                                    />
-                                </div>
-                                <div className="p-5">
-                                    <p className="text-xs font-semibold uppercase tracking-[0.08em] text-blue-600 mb-2">
-                                        {item.category}
-                                    </p>
-                                    <h3 className="text-base font-bold text-gray-900 leading-tight mb-3">
-                                        {item.title}
-                                    </h3>
-                                    <span className="inline-flex items-center justify-between gap-3 pl-4 pr-1.5 py-1.5 rounded-full bg-blue-700 hover:bg-blue-800 transition-colors font-semibold text-white text-xs">
-                                        View Image
-                                        <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
-                                            <ChevronRight className="w-4 h-4 text-blue-700" />
+                        {items.map((item, i) => {
+                            const isVideo = item.mediaType === "video";
+
+                            return (
+                                <Link
+                                    key={`${item.src}-${i}`}
+                                    href={item.src}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300"
+                                >
+                                    <div className="relative h-56 w-full bg-slate-100">
+                                        {isVideo ? (
+                                            <video
+                                                src={item.src}
+                                                className="h-full w-full object-cover"
+                                                muted
+                                                playsInline
+                                                controls
+                                                preload="metadata"
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={item.src}
+                                                alt={item.title}
+                                                fill
+                                                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                                            />
+                                        )}
+                                    </div>
+                                    <div className="p-5">
+                                        <p className="text-xs font-semibold uppercase tracking-[0.08em] text-blue-600 mb-2">
+                                            {item.category}
+                                        </p>
+                                        <h3 className="text-base font-bold text-gray-900 leading-tight mb-3">
+                                            {item.title}
+                                        </h3>
+                                        <span className="inline-flex items-center justify-between gap-3 pl-4 pr-1.5 py-1.5 rounded-full bg-blue-700 hover:bg-blue-800 transition-colors font-semibold text-white text-xs">
+                                            {isVideo ? "View Video" : "View Image"}
+                                            <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center shrink-0">
+                                                <ChevronRight className="w-4 h-4 text-blue-700" />
+                                            </span>
                                         </span>
-                                    </span>
-                                </div>
-                            </Link>
-                        ))}
+                                    </div>
+                                </Link>
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center text-slate-600">
-                        Gallery images will appear here once items are published from the admin panel.
+                        Gallery media will appear here once items are published from the admin panel.
                     </div>
                 )}
             </div>
