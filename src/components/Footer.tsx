@@ -17,6 +17,7 @@ const footerLinkSections = [
             { label: "Transfers", href: "/transfers" },
             { label: "Our Fleet", href: "/fleet" },
             { label: "Blog", href: "/blog" },
+            { label: "FAQ", href: "/faq" },
         ],
     },
     {
