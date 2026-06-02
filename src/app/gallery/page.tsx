@@ -125,11 +125,13 @@ export default async function GalleryPage() {
                                     rel="noopener noreferrer"
                                     className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300"
                                 >
-                                    <div className="relative h-56 w-full bg-slate-100">
+                                    <div
+                                        className={`relative w-full ${isVideo ? "aspect-video bg-black" : "h-56 bg-slate-100"}`}
+                                    >
                                         {isVideo ? (
                                             <video
                                                 src={item.src}
-                                                className="h-full w-full object-cover"
+                                                className="h-full w-full object-contain"
                                                 muted
                                                 playsInline
                                                 controls
