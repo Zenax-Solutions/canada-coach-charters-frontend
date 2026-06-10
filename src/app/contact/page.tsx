@@ -21,7 +21,7 @@ import {
     Van,
 } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaXTwitter, FaTiktok } from "react-icons/fa6";
 
 export default function ContactPage() {
     const serviceAreas = [
@@ -61,6 +61,11 @@ export default function ContactPage() {
             label: "X (Twitter)",
             href: "https://x.com/coachcharterss",
             icon: FaXTwitter,
+        },
+        {
+            label: "TikTok",
+            href: "https://www.tiktok.com/@canadacoachcharters0",
+            icon: FaTiktok,
         },
     ];
 

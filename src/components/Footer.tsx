@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaXTwitter, FaTiktok } from "react-icons/fa6";
 import QuoteModal from "@/components/QuoteModal";
 
 const footerLinkSections = [
@@ -52,6 +52,11 @@ const socialLinks = [
         label: "X (Twitter)",
         href: "https://x.com/coachcharterss",
         icon: FaXTwitter,
+    },
+    {
+        label: "TikTok",
+        href: "https://www.tiktok.com/@canadacoachcharters0",
+        icon: FaTiktok,
     },
 ];
 

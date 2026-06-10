@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import AIChatWidget from "@/components/AIChatWidget";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://canadacoachcharters.ca";
 
@@ -122,6 +123,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {children}
+        <WhatsAppWidget />
         <AIChatWidget />
       </body>
     </html>

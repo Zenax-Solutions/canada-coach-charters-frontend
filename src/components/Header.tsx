@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Menu, X, ChevronDown, MapPin, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import QuoteModal from "@/components/QuoteModal";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const gtaAreas = [
     "Toronto",
@@ -147,8 +148,9 @@ export default function Header() {
                             </div>
                         </nav>
 
-                        {/* CTA */}
-                        <div className="hidden lg:flex items-center">
+                        {/* Language + CTA */}
+                        <div className="hidden lg:flex items-center gap-2">
+                            <LanguageSwitcher />
                             <button
                                 type="button"
                                 onClick={() => setQuoteOpen(true)}
@@ -211,6 +213,10 @@ export default function Header() {
                                     </div>
                                 ))}
                             </div>
+                        </div>
+
+                        <div className="mt-2">
+                            <LanguageSwitcher />
                         </div>
 
                         <div className="mt-3 pt-3 border-t border-white/10">
