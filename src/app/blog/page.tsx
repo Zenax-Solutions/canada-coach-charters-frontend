@@ -24,7 +24,7 @@ interface ApiPost {
 async function getPosts(): Promise<ApiPost[]> {
     try {
         const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/blog?per_page=12`,
+            `${process.env.NEXT_PUBLIC_API_URL}/blog?per_page=100`,
             { next: { revalidate: 60 } }
         );
         if (!res.ok) return [];
