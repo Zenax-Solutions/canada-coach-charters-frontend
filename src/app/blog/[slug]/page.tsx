@@ -160,21 +160,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     {post.content ? (
                         <div
                             className="prose prose-slate max-w-none
-                                prose-headings:font-bold prose-headings:text-slate-900 prose-headings:tracking-tight
-                                prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
-                                prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-                                prose-h4:text-lg prose-h4:mt-6 prose-h4:mb-2
-                                prose-p:text-base prose-p:leading-8 prose-p:text-slate-700 prose-p:mb-5
+                                prose-headings:font-bold prose-headings:tracking-tight
+                                prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-100
+                                prose-h3:text-xl prose-h3:mt-10 prose-h3:mb-3
+                                prose-h4:text-lg prose-h4:mt-8 prose-h4:mb-2
+                                prose-p:leading-8 prose-p:mb-6
                                 prose-a:text-blue-700 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                                prose-strong:text-slate-900 prose-strong:font-semibold
-                                prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-2 prose-ul:my-5
-                                prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-2 prose-ol:my-5
-                                prose-li:text-base prose-li:leading-7 prose-li:text-slate-700
-                                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-5 prose-blockquote:italic prose-blockquote:text-slate-600 prose-blockquote:bg-slate-50 prose-blockquote:py-2 prose-blockquote:pr-4 prose-blockquote:rounded-r-xl prose-blockquote:my-6
-                                prose-img:rounded-2xl prose-img:shadow-md prose-img:my-8
-                                prose-hr:my-8 prose-hr:border-slate-200
-                                prose-code:text-sm prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-slate-800
-                                prose-pre:bg-slate-900 prose-pre:text-slate-100 prose-pre:rounded-2xl prose-pre:p-5 prose-pre:text-sm prose-pre:leading-6 prose-pre:overflow-x-auto"
+                                prose-strong:font-semibold
+                                prose-ul:space-y-3 prose-ul:my-6
+                                prose-ol:space-y-3 prose-ol:my-6
+                                prose-li:leading-7
+                                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:bg-slate-50 prose-blockquote:py-3 prose-blockquote:pr-5 prose-blockquote:rounded-r-xl prose-blockquote:my-8
+                                prose-img:rounded-2xl prose-img:shadow-md prose-img:my-10
+                                prose-hr:my-10
+                                prose-code:text-sm prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md
+                                prose-pre:bg-slate-900 prose-pre:rounded-2xl prose-pre:p-6 prose-pre:text-sm prose-pre:leading-6"
                             dangerouslySetInnerHTML={{ __html: post.content }}
                         />
                     ) : (
