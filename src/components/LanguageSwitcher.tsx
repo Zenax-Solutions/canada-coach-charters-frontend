@@ -107,19 +107,20 @@ export default function LanguageSwitcher() {
         if (code === current) return;
         setOpen(false);
 
+        saveLang(code);
+        setCurrent(code);
+
         if (code === "en") {
-            const cookie = document.cookie.split(";").find((c) => c.trim().startsWith("googtrans="));
-            if (cookie) {
-                document.cookie = "googtrans=; path=/; max-age=0";
-            }
-            saveLang("en");
-            setCurrent("en");
-            window.location.reload();
+            ["/en/fr", "/en/en"].forEach((v) => {
+                document.cookie = `googtrans=${v}; path=/; max-age=0`;
+                document.cookie = `googtrans=${v}; path=/; domain=${window.location.hostname}; max-age=0`;
+            });
+            document.cookie = "googtrans=; path=/; max-age=0";
+            const clean = window.location.pathname + window.location.search;
+            window.location.href = clean;
             return;
         }
 
-        setCurrent(code);
-        saveLang(code);
         triggerGoogleTranslate(code);
     };
 
