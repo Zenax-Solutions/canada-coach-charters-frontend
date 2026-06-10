@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import QuoteSection from "@/components/QuoteSection";
@@ -12,6 +14,8 @@ interface ApiPost {
     slug: string;
     excerpt: string | null;
     featured_image: string | null;
+    alt_text: string | null;
+    image_title: string | null;
     author: string;
     published_at: string | null;
     category: { name: string } | null;
@@ -34,6 +38,16 @@ async function getPosts(): Promise<ApiPost[]> {
 function formatDate(iso: string | null) {
     if (!iso) return "";
     return new Date(iso).toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric" });
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("blog");
+    return {
+        title: seo?.meta_title || "Blog | Canada Coach Charters",
+        description:
+            seo?.meta_description || "Transportation guides, planning tips, and fleet insights for group travel.",
+        keywords: seo?.keywords || undefined,
+    };
 }
 
 export default async function BlogPage() {
@@ -111,7 +125,8 @@ export default async function BlogPage() {
                                             {imgSrc ? (
                                                 <Image
                                                     src={imgSrc}
-                                                    alt={post.title}
+                                                    alt={post.alt_text ?? post.title}
+                                                    title={post.image_title ?? undefined}
                                                     fill
                                                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                                                     unoptimized={isLocalBackendImage}

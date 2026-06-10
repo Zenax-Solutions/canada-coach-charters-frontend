@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import QuoteSection from "@/components/QuoteSection";
@@ -10,53 +11,63 @@ import { getTourCategories, getTours } from "@/lib/tours";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://canadacoachcharters.ca";
 
-export const metadata: Metadata = {
-    title: "Sri Lanka Tours from Canada & USA | Guided Travel Packages",
-    description:
-        "Explore Sri Lanka tours from Canada and the USA. Choose from private, guided, wildlife, cultural, culinary, wellness, accessible, and custom Sri Lanka tour packages.",
-    keywords: [
-        "Sri Lanka tours from Canada",
-        "Sri Lanka tours from the USA",
-        "Sri Lanka tour packages",
-        "Sri Lanka guided tours",
-        "private Sri Lanka tours",
-        "Sri Lanka vacation packages",
-        "Sri Lanka wildlife tours",
-        "Sri Lanka cultural tours",
-        "Sri Lanka accessible tours",
-        "Sri Lanka culinary tours",
-        "Sri Lanka custom tours",
-        "Sri Lanka round tours",
-        "Sri Lanka luxury tours",
-        "Sri Lanka tours for Canadian travellers",
-        "Sri Lanka tours for American travellers",
-    ],
-    alternates: {
-        canonical: "/tours",
-    },
-    openGraph: {
-        type: "website",
-        url: `${siteUrl}/tours`,
-        title: "Sri Lanka Tours from Canada & USA",
-        description:
-            "Guided Sri Lanka travel packages for Canadian and American travellers, including private, wildlife, cultural, culinary, wellness, accessible, and custom tours.",
-        images: [
-            {
-                url: "/page-header.jpg",
-                width: 1200,
-                height: 630,
-                alt: "Sri Lanka Tours",
-            },
-        ],
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Sri Lanka Tours from Canada & USA",
-        description:
-            "Explore guided Sri Lanka tour packages for Canada and USA travellers.",
-        images: ["/page-header.jpg"],
-    },
-};
+const toursKeywords = [
+    "Sri Lanka tours from Canada",
+    "Sri Lanka tours from the USA",
+    "Sri Lanka tour packages",
+    "Sri Lanka guided tours",
+    "private Sri Lanka tours",
+    "Sri Lanka vacation packages",
+    "Sri Lanka wildlife tours",
+    "Sri Lanka cultural tours",
+    "Sri Lanka accessible tours",
+    "Sri Lanka culinary tours",
+    "Sri Lanka custom tours",
+    "Sri Lanka round tours",
+    "Sri Lanka luxury tours",
+    "Sri Lanka tours for Canadian travellers",
+    "Sri Lanka tours for American travellers",
+];
+
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("tours");
+    const title = seo?.meta_title || "Sri Lanka Tours from Canada & USA | Guided Travel Packages";
+    const description =
+        seo?.meta_description ||
+        "Explore Sri Lanka tours from Canada and the USA. Choose from private, guided, wildlife, cultural, culinary, wellness, accessible, and custom Sri Lanka tour packages.";
+    return {
+        title,
+        description,
+        keywords: seo?.keywords ? seo.keywords.split(",").map((k) => k.trim()) : toursKeywords,
+        alternates: {
+            canonical: "/tours",
+        },
+        openGraph: {
+            type: "website",
+            url: `${siteUrl}/tours`,
+            title,
+            description:
+                seo?.meta_description ||
+                "Guided Sri Lanka travel packages for Canadian and American travellers, including private, wildlife, cultural, culinary, wellness, accessible, and custom tours.",
+            images: [
+                {
+                    url: "/page-header.jpg",
+                    width: 1200,
+                    height: 630,
+                    alt: "Sri Lanka Tours",
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description:
+                seo?.meta_description ||
+                "Explore guided Sri Lanka tour packages for Canada and USA travellers.",
+            images: ["/page-header.jpg"],
+        },
+    };
+}
 
 export default async function ToursPage({
     searchParams,

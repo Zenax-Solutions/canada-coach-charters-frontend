@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -23,25 +24,31 @@ import {
     Wifi,
 } from "lucide-react";
 
-export const metadata: Metadata = {
-    title: {
-        absolute: "About Canada Coach Charters | Charter Bus Rentals in Toronto & GTA",
-    },
-    description:
-        "Canada Coach Charters provides safe and reliable charter bus rentals in Toronto, the GTA, and across Ontario for corporate travel, school trips, airport transfers, tours, weddings, and group events.",
-    keywords: [
-        "charter bus rental Toronto",
-        "coach bus rental GTA",
-        "bus charter Ontario",
-        "group transportation Toronto",
-        "school bus charter Toronto",
-        "corporate bus rental Toronto",
-        "airport transfer bus Toronto",
-        "Niagara Falls bus tour",
-        "private bus rental Toronto",
-        "Canada coach charter services",
-    ],
-};
+const aboutKeywords = [
+    "charter bus rental Toronto",
+    "coach bus rental GTA",
+    "bus charter Ontario",
+    "group transportation Toronto",
+    "school bus charter Toronto",
+    "corporate bus rental Toronto",
+    "airport transfer bus Toronto",
+    "Niagara Falls bus tour",
+    "private bus rental Toronto",
+    "Canada coach charter services",
+];
+
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("about");
+    return {
+        title: {
+            absolute: seo?.meta_title || "About Canada Coach Charters | Charter Bus Rentals in Toronto & GTA",
+        },
+        description:
+            seo?.meta_description ||
+            "Canada Coach Charters provides safe and reliable charter bus rentals in Toronto, the GTA, and across Ontario for corporate travel, school trips, airport transfers, tours, weddings, and group events.",
+        keywords: seo?.keywords ? seo.keywords.split(",").map((k) => k.trim()) : aboutKeywords,
+    };
+}
 
 const services = [
     "Corporate transportation",

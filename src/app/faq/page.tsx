@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import Header from "@/components/Header";
@@ -167,33 +168,40 @@ const faqSections: FAQSection[] = [
     },
 ];
 
-export const metadata: Metadata = {
-    title: "Frequently Asked Questions | Canada Coach Charters",
-    description:
-        "Browse frequently asked questions about charter bus services, airport transfers, group travel, booking policies, and pricing.",
-    alternates: {
-        canonical: "/faq",
-        languages: {
-            "en-CA": "/faq",
-            "x-default": "/faq",
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("faq");
+    const title = seo?.meta_title || "Frequently Asked Questions | Canada Coach Charters";
+    const description =
+        seo?.meta_description ||
+        "Browse frequently asked questions about charter bus services, airport transfers, group travel, booking policies, and pricing.";
+    return {
+        title,
+        description,
+        keywords: seo?.keywords || undefined,
+        alternates: {
+            canonical: "/faq",
+            languages: {
+                "en-CA": "/faq",
+                "x-default": "/faq",
+            },
         },
-    },
-    openGraph: {
-        type: "website",
-        url: `${siteUrl}/faq`,
-        locale: "en_CA",
-        title: "Frequently Asked Questions | Canada Coach Charters",
-        description: "Answers about charter transportation, service areas, pricing, and booking policies.",
-        siteName: "Canada Coach Charters",
-        images: [{ url: "/page-header.jpg", width: 1200, height: 630, alt: "Canada Coach Charters FAQ" }],
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Frequently Asked Questions | Canada Coach Charters",
-        description: "Find quick answers for bookings, service options, and trip planning.",
-        images: ["/page-header.jpg"],
-    },
-};
+        openGraph: {
+            type: "website",
+            url: `${siteUrl}/faq`,
+            locale: "en_CA",
+            title,
+            description: seo?.meta_description || "Answers about charter transportation, service areas, pricing, and booking policies.",
+            siteName: "Canada Coach Charters",
+            images: [{ url: "/page-header.jpg", width: 1200, height: 630, alt: "Canada Coach Charters FAQ" }],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description: seo?.meta_description || "Find quick answers for bookings, service options, and trip planning.",
+            images: ["/page-header.jpg"],
+        },
+    };
+}
 
 export default function FaqPage() {
     const faqStructuredData = {

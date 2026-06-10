@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import QuoteSection from "@/components/QuoteSection";
@@ -14,11 +16,16 @@ import {
     Compass,
 } from "lucide-react";
 
-export const metadata = {
-    title: "Rental Bus Services in Toronto | Private School, Church & Group Charters in the GTA",
-    description:
-        "Canada Coach Charters provides reliable bus rental and charter services in Toronto and the GTA for private schools, churches, corporate groups, weddings, airport transfers, and private travel. Approved for Toronto District School Board and York Region District School Board transportation.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("services");
+    return {
+        title: seo?.meta_title || "Rental Bus Services in Toronto | Private School, Church & Group Charters in the GTA",
+        description:
+            seo?.meta_description ||
+            "Canada Coach Charters provides reliable bus rental and charter services in Toronto and the GTA for private schools, churches, corporate groups, weddings, airport transfers, and private travel. Approved for Toronto District School Board and York Region District School Board transportation.",
+        keywords: seo?.keywords || undefined,
+    };
+}
 
 const services = [
     {

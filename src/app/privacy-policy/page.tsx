@@ -1,25 +1,33 @@
+import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export const metadata = {
-    title: "Privacy Policy | Canada Coach Charters",
-    description:
-        "Read the Canada Coach Charters Privacy Policy to learn how we collect, use, protect, and disclose personal information when you use our website, quote forms, AI chat assistant, and online services.",
-    keywords: [
-        "Privacy Policy Canada Coach Charters",
-        "Canada Coach Charters privacy policy",
-        "charter bus privacy policy",
-        "Coach Bus Company Privacy Policy",
-        "Toronto bus charter privacy",
-        "group transportation privacy policy",
-        "Canada Coach Charters contact information",
-        "AI chat privacy policy",
-        "charter bus quote privacy",
-        "transportation website privacy policy",
-    ],
-};
+const privacyKeywords = [
+    "Privacy Policy Canada Coach Charters",
+    "Canada Coach Charters privacy policy",
+    "charter bus privacy policy",
+    "Coach Bus Company Privacy Policy",
+    "Toronto bus charter privacy",
+    "group transportation privacy policy",
+    "Canada Coach Charters contact information",
+    "AI chat privacy policy",
+    "charter bus quote privacy",
+    "transportation website privacy policy",
+];
+
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("privacy-policy");
+    return {
+        title: seo?.meta_title || "Privacy Policy | Canada Coach Charters",
+        description:
+            seo?.meta_description ||
+            "Read the Canada Coach Charters Privacy Policy to learn how we collect, use, protect, and disclose personal information when you use our website, quote forms, AI chat assistant, and online services.",
+        keywords: seo?.keywords ? seo.keywords.split(",").map((k) => k.trim()) : privacyKeywords,
+    };
+}
 
 export default function PrivacyPolicyPage() {
     const sections = [

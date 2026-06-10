@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BookingCard from "@/components/BookingCard";
@@ -22,6 +24,16 @@ import {
 } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { FaXTwitter, FaTiktok } from "react-icons/fa6";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("contact");
+    return {
+        title: seo?.meta_title || "Contact Us | Canada Coach Charters",
+        description:
+            seo?.meta_description || "Get in touch with Canada Coach Charters for quotes, bookings, and inquiries.",
+        keywords: seo?.keywords || undefined,
+    };
+}
 
 export default function ContactPage() {
     const serviceAreas = [

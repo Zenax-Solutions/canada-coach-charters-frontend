@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import QuoteSection from "@/components/QuoteSection";
@@ -99,43 +100,47 @@ export async function generateMetadata({
     params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
     const { slug } = await params;
-    const tour = await getTour(slug);
+    const [tour, seo] = await Promise.all([getTour(slug), getPageSeo("tours")]);
 
     if (!tour) {
         return {
-            title: "Tour Not Found",
-            description: "The requested tour could not be found.",
+            title: seo?.meta_title || "Tour Not Found",
+            description: seo?.meta_description || "The requested tour could not be found.",
         };
     }
 
     const canonicalPath = `/tours/${tour.slug}`;
     const imageUrl = storageUrl(tour.featured_image) ?? "/page-header.jpg";
 
+    const keywords = seo?.keywords
+        ? seo.keywords.split(",").map((k) => k.trim())
+        : [
+              tour.title,
+              `${tour.country ?? "Sri Lanka"} tour package`,
+              `${tour.duration_days} day tour`,
+              "private guided tour",
+              "itinerary",
+              "wildlife and heritage",
+              "tour pricing",
+              "tour accommodation",
+              "custom travel package",
+              "guided holiday package",
+              "international group tour",
+              "tour from Canada",
+          ];
+
     return {
-        title: tour.title,
-        description: tour.short_description || tour.description,
-        keywords: [
-            tour.title,
-            `${tour.country ?? "Sri Lanka"} tour package`,
-            `${tour.duration_days} day tour`,
-            "private guided tour",
-            "itinerary",
-            "wildlife and heritage",
-            "tour pricing",
-            "tour accommodation",
-            "custom travel package",
-            "guided holiday package",
-            "international group tour",
-            "tour from Canada",
-        ],
+        title: seo?.meta_title || tour.title,
+        description: seo?.meta_description || tour.short_description || tour.description,
+        keywords,
         alternates: {
             canonical: canonicalPath,
         },
         openGraph: {
             type: "article",
             url: `${siteUrl}${canonicalPath}`,
-            title: tour.title,
-            description: tour.short_description || tour.description,
+            title: seo?.meta_title || tour.title,
+            description: seo?.meta_description || tour.short_description || tour.description,
             images: [
                 {
                     url: imageUrl,
@@ -145,8 +150,8 @@ export async function generateMetadata({
         },
         twitter: {
             card: "summary_large_image",
-            title: tour.title,
-            description: tour.short_description || tour.description,
+            title: seo?.meta_title || tour.title,
+            description: seo?.meta_description || tour.short_description || tour.description,
             images: [imageUrl],
         },
     };

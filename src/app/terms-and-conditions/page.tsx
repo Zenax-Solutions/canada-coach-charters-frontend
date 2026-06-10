@@ -1,28 +1,36 @@
+import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export const metadata = {
-    title: "Terms and Conditions | Charter Bus Rental Policies | Canada Coach Charters",
-    description:
-        "Read the Canada Coach Charters Terms and Conditions for charter bus rental, coach rental, shuttle service, payments, cancellations, passenger conduct, SMS messaging, safety, delays, and transportation policies in Ontario.",
-    keywords: [
-        "Canada Coach Charters terms and conditions",
-        "charter bus terms and conditions",
-        "Coach Rental Terms Ontario",
-        "charter bus rental policies",
-        "bus rental cancellation policy",
-        "Toronto charter bus terms",
-        "Richmond Hill coach rental",
-        "Ontario group transportation policies",
-        "airport shuttle terms",
-        "wedding transportation policy",
-        "school trip transportation terms",
-        "corporate shuttle service terms",
-        "SMS messaging consent policy",
-    ],
-};
+const termsKeywords = [
+    "Canada Coach Charters terms and conditions",
+    "charter bus terms and conditions",
+    "Coach Rental Terms Ontario",
+    "charter bus rental policies",
+    "bus rental cancellation policy",
+    "Toronto charter bus terms",
+    "Richmond Hill coach rental",
+    "Ontario group transportation policies",
+    "airport shuttle terms",
+    "wedding transportation policy",
+    "school trip transportation terms",
+    "corporate shuttle service terms",
+    "SMS messaging consent policy",
+];
+
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("terms-and-conditions");
+    return {
+        title: seo?.meta_title || "Terms and Conditions | Charter Bus Rental Policies | Canada Coach Charters",
+        description:
+            seo?.meta_description ||
+            "Read the Canada Coach Charters Terms and Conditions for charter bus rental, coach rental, shuttle service, payments, cancellations, passenger conduct, SMS messaging, safety, delays, and transportation policies in Ontario.",
+        keywords: seo?.keywords ? seo.keywords.split(",").map((k) => k.trim()) : termsKeywords,
+    };
+}
 
 export default function TermsAndConditionsPage() {
     const sections = [

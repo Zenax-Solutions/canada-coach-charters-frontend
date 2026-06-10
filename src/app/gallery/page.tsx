@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { getPageSeo } from "@/lib/page-seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import QuoteSection from "@/components/QuoteSection";
@@ -33,6 +35,16 @@ async function getGalleryItems(): Promise<ApiGalleryItem[]> {
     } catch {
         return [];
     }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+    const seo = await getPageSeo("gallery");
+    return {
+        title: seo?.meta_title || "Gallery | Canada Coach Charters",
+        description:
+            seo?.meta_description || "View our fleet and past service gallery.",
+        keywords: seo?.keywords || undefined,
+    };
 }
 
 export default async function GalleryPage() {

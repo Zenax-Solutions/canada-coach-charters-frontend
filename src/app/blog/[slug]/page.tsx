@@ -6,6 +6,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Calendar, ChevronLeft } from "lucide-react";
 import { storageUrl } from "@/lib/api";
+import type { Metadata } from "next";
 
 interface ApiPost {
     id: number;
@@ -14,8 +15,13 @@ interface ApiPost {
     excerpt: string | null;
     content: string | null;
     featured_image: string | null;
+    alt_text: string | null;
+    image_title: string | null;
     author: string | null;
     published_at: string | null;
+    meta_title: string | null;
+    meta_description: string | null;
+    schema: string | null;
     category: { name: string } | null;
 }
 
@@ -39,6 +45,22 @@ function formatDate(iso: string | null) {
     return new Date(iso).toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric" });
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const post = await getPost(slug);
+    if (!post) return {};
+
+    return {
+        title: post.meta_title || post.title,
+        description: post.meta_description || post.excerpt || undefined,
+        openGraph: {
+            title: post.meta_title || post.title,
+            description: post.meta_description || post.excerpt || undefined,
+            images: post.featured_image ? [{ url: storageUrl(post.featured_image) ?? "" }] : undefined,
+        },
+    };
+}
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const post = await getPost(slug);
@@ -52,8 +74,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         imgSrc && (imgSrc.startsWith("http://localhost:") || imgSrc.startsWith("http://127.0.0.1:"))
     );
 
+    const schemaMarkup = post.schema
+        ? post.schema
+        : JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: post.meta_title || post.title,
+              description: post.meta_description || post.excerpt,
+              image: imgSrc,
+              datePublished: post.published_at,
+              author: post.author ? { "@type": "Person", name: post.author } : undefined,
+          });
+
     return (
         <div className="min-h-screen bg-white p-1 sm:p-4">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaMarkup }} />
+
             <div className="relative rounded-3xl overflow-hidden">
                 <Header />
 
@@ -105,7 +141,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {imgSrc ? (
                             <Image
                                 src={imgSrc}
-                                alt={post.title}
+                                alt={post.alt_text ?? post.title}
+                                title={post.image_title ?? undefined}
                                 fill
                                 sizes="(min-width: 1024px) 896px, 100vw"
                                 unoptimized={isLocalBackendImage}

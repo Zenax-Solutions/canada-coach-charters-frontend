@@ -13,45 +13,37 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import QuoteSection from "@/components/QuoteSection";
 import Footer from "@/components/Footer";
 import { School, Church, BadgeCheck } from "lucide-react";
+import { getPageSeo } from "@/lib/page-seo";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://canadacoachcharters.ca";
 
-export const metadata: Metadata = {
-  title: "Canada Coach Charters | Rental Bus Services in Toronto",
-  description:
-    "Explore Canada with Canada Coach Charters. We provide wedding, corporate, private travel, school rentals, and airport shuttle services at affordable rates.",
-  alternates: {
-    canonical: "/",
-    languages: {
-      "en-CA": "/",
-      "x-default": "/",
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("home");
+  return {
+    title: seo?.meta_title || "Canada Coach Charters | Rental Bus Services in Toronto",
+    description: seo?.meta_description || "Explore Canada with Canada Coach Charters. We provide wedding, corporate, private travel, school rentals, and airport shuttle services at affordable rates.",
+    keywords: seo?.keywords || undefined,
+    alternates: {
+      canonical: "/",
+      languages: { "en-CA": "/", "x-default": "/" },
     },
-  },
-  openGraph: {
-    type: "website",
-    url: siteUrl,
-    locale: "en_CA",
-    title: "Canada Coach Charters | Rental Bus Services in Toronto",
-    description:
-      "Wedding, corporate, private travel, school rental, and airport shuttle services in Toronto and across the GTA.",
-    siteName: "Canada Coach Charters",
-    images: [
-      {
-        url: "/page-header.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Canada Coach Charters",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Canada Coach Charters | Rental Bus Services in Toronto",
-    description:
-      "Trusted charter buses, airport transfers, and group transportation across Toronto and the GTA.",
-    images: ["/page-header.jpg"],
-  },
-};
+    openGraph: {
+      type: "website",
+      url: siteUrl,
+      locale: "en_CA",
+      title: seo?.meta_title || "Canada Coach Charters | Rental Bus Services in Toronto",
+      description: seo?.meta_description || "Wedding, corporate, private travel, school rental, and airport shuttle services in Toronto and across the GTA.",
+      siteName: "Canada Coach Charters",
+      images: [{ url: "/page-header.jpg", width: 1200, height: 630, alt: "Canada Coach Charters" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo?.meta_title || "Canada Coach Charters | Rental Bus Services in Toronto",
+      description: seo?.meta_description || "Trusted charter buses, airport transfers, and group transportation across Toronto and the GTA.",
+      images: ["/page-header.jpg"],
+    },
+  };
+}
 
 export default function Home() {
   const structuredData = {
