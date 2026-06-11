@@ -32,6 +32,12 @@ const services = [
         title: "Private School Bus Rentals in the GTA",
         description:
             "Canada Coach Charters proudly serves private schools across the GTA, offering dependable bus rentals for field trips, athletics, academics, daily transport, special events, and student travel. Our transportation is planned for safety, punctuality, and clear communication.",
+        extra: [
+            "Canada Coach Charters is also on the approved list for:",
+            "Toronto District School Board",
+            "York Region District School Board",
+            "This makes us a trusted school bus and student transportation provider in Toronto, York Region, and the GTA.",
+        ],
         image: "/services-page/corporate-travel.jpg",
         icon: Briefcase,
     },
@@ -39,6 +45,9 @@ const services = [
         title: "Church Bus Rentals in the GTA",
         description:
             "We provide church bus rental services for congregations, ministries, youth groups, seniors' groups, retreats, conferences, community events, and special worship gatherings across the GTA.",
+        extra: [
+            "For local or longer group trips, we offer comfortable, reliable transportation for your congregation, helping everyone arrive together and on time.",
+        ],
         image: "/services-page/buying-an-engagement.jpg",
         icon: Heart,
     },
@@ -46,6 +55,9 @@ const services = [
         title: "Corporate Bus Rentals",
         description:
             "Canada Coach Charters offers professional corporate transportation for meetings, conferences, staff events, team-building outings, trade shows, conventions, and business travel.",
+        extra: [
+            "Our charters move employees, clients, and guests efficiently throughout Toronto and the GTA, working with your schedule for smooth pickup, drop-off, and transportation support.",
+        ],
         image: "/services-page/school-rental-services.jpg",
         icon: GraduationCap,
     },
@@ -53,6 +65,9 @@ const services = [
         title: "Wedding Transportation",
         description:
             "Make your wedding easier with a private bus rental for guests, parties, and family. We provide rides to ceremonies, receptions, hotels, photo sites, and after-events.",
+        extra: [
+            "Our wedding shuttle services help keep your guests together and reduce parking, traffic, and timing concerns on your special day.",
+        ],
         image: "/services-page/Airport-Shuttle-Service.jpg",
         icon: Plane,
     },
@@ -60,6 +75,9 @@ const services = [
         title: "Airport Shuttle Services",
         description:
             "We offer airport and group shuttle transfers to Toronto Pearson International Airport, Billy Bishop Toronto City Airport, hotels, offices, schools, churches, and private addresses.",
+        extra: [
+            "Our airport service suits corporate, school, sports, tour, wedding, and private groups needing reliable transport.",
+        ],
         image: "/services-page/private-travel.jpg",
         icon: ShieldCheck,
     },
@@ -156,9 +174,25 @@ export default function ServicesPage() {
                                 </div>
 
                                 <div className="p-6">
-                                    <p className="text-sm text-gray-500 leading-relaxed mb-5">
+                                    <p className="text-sm text-gray-500 leading-relaxed mb-4">
                                         {service.description}
                                     </p>
+
+                                    {service.extra?.map((line, i) => {
+                                        if (line.startsWith("Toronto District School Board") || line.startsWith("York Region District School Board")) {
+                                            return (
+                                                <div key={i} className="flex items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-800 mb-2">
+                                                    <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-600" />
+                                                    {line}
+                                                </div>
+                                            );
+                                        }
+                                        return (
+                                            <p key={i} className="text-sm text-gray-500 leading-relaxed mb-4">
+                                                {line}
+                                            </p>
+                                        );
+                                    })}
 
                                     <Link
                                         href="/contact"

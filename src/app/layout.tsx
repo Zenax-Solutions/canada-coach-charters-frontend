@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, Dancing_Script } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import AIChatWidget from "@/components/AIChatWidget";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
@@ -122,6 +123,16 @@ export default function RootLayout({
         className="min-h-screen font-[family-name:var(--font-manrope)] antialiased"
         suppressHydrationWarning
       >
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-E5CFLVF3Q9"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-E5CFLVF3Q9');`}
+        </Script>
         {children}
         <WhatsAppWidget />
         <AIChatWidget />

@@ -303,8 +303,11 @@ export default function TransfersPage() {
                         <p className="text-blue-100 leading-relaxed mb-5">
                             We serve companies, schools, agencies, sports organisations, wedding planners, and private groups. Need a one-time or recurring transfer? We will build a plan for your route, timing, and passenger count.
                         </p>
-                        <p className="text-blue-100 leading-relaxed mb-6">
+                        <p className="text-blue-100 leading-relaxed mb-4">
                             Planning group transportation in Toronto or Ontario? We are ready to help with transfer services tailored to your trip.
+                        </p>
+                        <p className="text-blue-100 leading-relaxed mb-6">
+                            Contact us today for a fast, personalised quote and secure your private bus, shuttle, or coach transfer with Canada Coach Charters. Let us ensure your group&apos;s travel goes smoothly&mdash;reserve now and experience the difference.
                         </p>
                         <button
                             type="button"
