@@ -262,7 +262,7 @@ export default function BookingCard({
 
         let mounted = true;
         setDistanceLoading(true);
-        getDrivingRouteMetricsToDropoff(dropoffPoint)
+        getDrivingRouteMetricsToDropoff(dropoffPoint, pickupPoint)
             .then((metrics) => {
                 if (mounted) setRouteMetrics(metrics);
             })
@@ -273,7 +273,7 @@ export default function BookingCard({
         return () => {
             mounted = false;
         };
-    }, [dropoffPoint, mode]);
+    }, [dropoffPoint, pickupPoint, mode]);
 
     // Auto-reset form after successful submission
     useEffect(() => {
@@ -403,7 +403,7 @@ export default function BookingCard({
             let route: RouteMetrics | null = null;
             if (mode === "quote" && serviceType !== "tour" && resolvedDropoff) {
                 try {
-                    route = await getDrivingRouteMetricsToDropoff(resolvedDropoff);
+                    route = await getDrivingRouteMetricsToDropoff(resolvedDropoff, resolvedPickup);
                 } catch {
                     route = null;
                 }

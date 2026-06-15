@@ -82,11 +82,25 @@ async function getFixedDistanceOriginPoint(): Promise<GeoPoint | null> {
     return fixedDistanceOriginCache;
 }
 
-export async function getDrivingRouteMetricsToDropoff(dropoff: GeoPoint): Promise<RouteMetrics | null> {
+export async function getDrivingRouteMetricsToDropoff(dropoff: GeoPoint, pickup?: GeoPoint | null): Promise<RouteMetrics | null> {
     const fixedOrigin = await getFixedDistanceOriginPoint();
     if (!fixedOrigin) {
         return null;
     }
 
-    return getDrivingRouteMetrics(fixedOrigin, dropoff);
+    if (!pickup) {
+        return getDrivingRouteMetrics(fixedOrigin, dropoff);
+    }
+
+    const [leg1, leg2] = await Promise.all([
+        getDrivingRouteMetrics(fixedOrigin, pickup),
+        getDrivingRouteMetrics(pickup, dropoff),
+    ]);
+
+    if (!leg1 || !leg2) return null;
+
+    return {
+        distanceKm: Math.round((leg1.distanceKm + leg2.distanceKm) * 10) / 10,
+        durationMinutes: leg1.durationMinutes + leg2.durationMinutes,
+    };
 }

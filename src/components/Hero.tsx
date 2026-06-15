@@ -107,7 +107,7 @@ export default function Hero() {
 
             const route =
                 serviceType !== "tour" && resolvedDropoff
-                    ? await getDrivingRouteMetricsToDropoff(resolvedDropoff)
+                    ? await getDrivingRouteMetricsToDropoff(resolvedDropoff, resolvedPickup)
                     : null;
 
             const contextualDetails = [
@@ -288,7 +288,7 @@ export default function Hero() {
 
         let mounted = true;
         setDistanceLoading(true);
-        getDrivingRouteMetricsToDropoff(dropoffPoint)
+        getDrivingRouteMetricsToDropoff(dropoffPoint, pickupPoint)
             .then((metrics) => {
                 if (mounted) setRouteMetrics(metrics);
             })
@@ -299,7 +299,7 @@ export default function Hero() {
         return () => {
             mounted = false;
         };
-    }, [dropoffPoint, serviceType]);
+    }, [dropoffPoint, pickupPoint, serviceType]);
 
     useEffect(() => {
         if (!submitted) return;
