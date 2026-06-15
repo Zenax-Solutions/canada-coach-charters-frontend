@@ -100,18 +100,18 @@ const transfers = [
 ];
 
 const transferImages: Record<string, string> = {
-    "Airport Arrivals and Departures": "/tranfers/Airport-transfers.jpg",
-    "Hotel and Resort Transfers": "/tranfers/Hotel-Transfers.jpg",
-    "Corporate Group Transportation": "/tranfers/group-transfer.jpg",
-    "Wedding Guest Transfers": "/tranfers/Private-Transfers.jpg",
-    "Conference and Convention Shuttles": "/tranfers/Shuttle-Transfers.jpg",
-    "Sports Team Transportation": "/tranfers/group-transfer.jpg",
-    "School and University Group Transfers": "/tranfers/Disability-Accessible.jpg",
-    "Tour Group Transfers": "/tranfers/City-Transfers.jpg",
-    "Cruise, Rail, and Station Transfers": "/tranfers/Port-Transfers.jpg",
-    "Private City-to-City Transfers": "/tranfers/Intercity-Transfers.jpg",
-    "Baggage and Luggage Transfers": "/tranfers/baggage_transffer.jpg",
-    "Luxury Coach and Shuttle Transfers": "/tranfers/Luxury-Transfers.jpg",
+    "Airport Arrivals and Departures": "/tranfers-new/12.jpeg",
+    "Hotel and Resort Transfers": "/tranfers-new/4.jpeg",
+    "Corporate Group Transportation": "/tranfers-new/2.jpeg",
+    "Wedding Guest Transfers": "/tranfers-new/10.jpeg",
+    "Conference and Convention Shuttles": "/tranfers-new/1.jpeg",
+    "Sports Team Transportation": "/tranfers-new/8.jpeg",
+    "School and University Group Transfers": "/tranfers-new/7.jpeg",
+    "Tour Group Transfers": "/tranfers-new/11.jpeg",
+    "Cruise, Rail, and Station Transfers": "/tranfers-new/6.jpeg",
+    "Private City-to-City Transfers": "/tranfers-new/9.jpeg",
+    "Baggage and Luggage Transfers": "/tranfers-new/3.jpeg",
+    "Luxury Coach and Shuttle Transfers": "/tranfers-new/5.jpeg",
 };
 
 export default function TransfersPage() {
@@ -203,7 +203,7 @@ export default function TransfersPage() {
                                 key={item.title}
                                 className="group relative bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
                             >
-                                <div className="relative w-full aspect-square overflow-hidden rounded-xl mb-5">
+                                <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl mb-5">
                                     <Image
                                         src={transferImages[item.title]}
                                         alt={item.title}

@@ -61,15 +61,15 @@ export async function getDrivingRouteMetrics(from: GeoPoint, to: GeoPoint): Prom
     if (!res.ok) return null;
 
     const data = (await res.json()) as {
-        routes?: Array<{ distance: number; duration: number }>;
+        distance_km?: number;
+        duration_minutes?: number;
     };
 
-    const first = data.routes?.[0];
-    if (!first) return null;
+    if (data.distance_km === undefined || data.duration_minutes === undefined) return null;
 
     return {
-        distanceKm: Number((first.distance / 1000).toFixed(1)),
-        durationMinutes: Math.round(first.duration / 60),
+        distanceKm: data.distance_km,
+        durationMinutes: data.duration_minutes,
     };
 }
 

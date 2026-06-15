@@ -17,14 +17,6 @@ const flipWords = ["Travel", "Adventure", "Discovery", "Freedom"];
 type ServiceType = "charter" | "transfer" | "tour";
 type TransferTripType = "round-trip" | "one-way";
 
-const TRANSFER_OPTIONS = [
-    "Airport Transfer",
-    "Hotel Transfer",
-    "City Transfer",
-    "Intercity Transfer",
-    "Private Transfer",
-];
-
 interface TourListItem {
     id: number;
     title: string;
@@ -90,7 +82,6 @@ export default function Hero() {
             return;
         }
 
-        if (serviceType === "transfer" && !transferOption.trim()) { setFormError("Please select transfer service."); return; }
         if (serviceType === "transfer" && !pickupTime.trim()) { setFormError("Please select pickup time."); return; }
         if (serviceType === "transfer" && transferTripType === "round-trip" && !departureDate) { setFormError("Please select departure date."); return; }
         if (serviceType === "transfer" && transferTripType === "round-trip" && !departureTime.trim()) { setFormError("Please select departure time."); return; }
@@ -550,7 +541,7 @@ export default function Hero() {
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Use Vehicle at Destination</label>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Vehicle at destination?</label>
                                                 <select
                                                     value={useVehicleAtDestination}
                                                     onChange={(e) => setUseVehicleAtDestination(e.target.value as "yes" | "no")}
@@ -562,19 +553,7 @@ export default function Hero() {
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1.5">Select Service</label>
-                                            <select
-                                                value={transferOption}
-                                                onChange={(e) => setTransferOption(e.target.value)}
-                                                className="w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm focus:border-blue-500 focus:ring-blue-500"
-                                            >
-                                                <option value="">Select transfer service</option>
-                                                {TRANSFER_OPTIONS.map((option) => (
-                                                    <option key={option} value={option}>{option}</option>
-                                                ))}
-                                            </select>
-                                        </div>
+
                                     </>
                                 )}
 
@@ -622,7 +601,7 @@ export default function Hero() {
                                                 <div className="relative">
                                                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                                                     <Input
-                                                        placeholder="Enter pickup location"
+                                                        placeholder="Pickup location"
                                                         value={pickup}
                                                         onChange={e => {
                                                             setPickup(e.target.value);
@@ -684,7 +663,7 @@ export default function Hero() {
                                                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400 pointer-events-none" />
                                                     <Input
                                                         ref={dropoffInputRef}
-                                                        placeholder={serviceType === "transfer" ? "Enter destination location" : "Enter drop-off location"}
+                                                        placeholder={serviceType === "transfer" ? "Destination" : "Drop-off"}
                                                         value={dropoff}
                                                         onChange={e => {
                                                             setDropoff(e.target.value);
@@ -787,7 +766,7 @@ export default function Hero() {
                                                 <Input
                                                     type="number"
                                                     min={1}
-                                                    placeholder="0"
+                                                    placeholder="1"
                                                     value={passengers}
                                                     onChange={e => setPassengers(e.target.value)}
                                                     className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 text-sm focus:border-blue-500 focus:ring-blue-500"
@@ -844,7 +823,7 @@ export default function Hero() {
                                             <Input
                                                 type="number"
                                                 min={1}
-                                                placeholder="0"
+                                                placeholder="1"
                                                 value={passengers}
                                                 onChange={e => setPassengers(e.target.value)}
                                                 className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 text-sm focus:border-blue-500 focus:ring-blue-500"
@@ -857,12 +836,12 @@ export default function Hero() {
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <div className="flex-1">
                                         <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                            User name
+                                            Name
                                         </label>
                                         <div className="relative">
                                             <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                                             <Input
-                                                placeholder="Your full name"
+                                                placeholder="Full name"
                                                 value={fullName}
                                                 onChange={e => setFullName(e.target.value)}
                                                 className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
@@ -878,7 +857,7 @@ export default function Hero() {
                                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                                             <Input
                                                 type="email"
-                                                placeholder="you@example.com"
+                                                placeholder="Email"
                                                 value={email}
                                                 onChange={e => setEmail(e.target.value)}
                                                 className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
@@ -896,7 +875,7 @@ export default function Hero() {
                                         <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                                         <Input
                                             type="tel"
-                                            placeholder="Your mobile number"
+                                            placeholder="Mobile number"
                                             value={mobile}
                                             onChange={e => setMobile(e.target.value)}
                                             className="pl-9 h-11 border-gray-200 rounded-xl bg-gray-50/80 focus:border-blue-500 focus:ring-blue-500"
@@ -911,7 +890,7 @@ export default function Hero() {
                                     <textarea
                                         value={note}
                                         onChange={e => setNote(e.target.value)}
-                                        placeholder="Any extra details for your request"
+                                        placeholder="Extra details"
                                         className="w-full min-h-20 rounded-xl border border-gray-200 bg-gray-50/80 p-3 text-sm outline-none focus:border-blue-500"
                                     />
                                 </div>

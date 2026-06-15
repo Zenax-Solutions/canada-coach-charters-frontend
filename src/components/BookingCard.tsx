@@ -16,14 +16,6 @@ type TripType = "inter-city" | "inter-province";
 type TransferTripType = "round-trip" | "one-way";
 type Mode = "booking" | "quote";
 
-const TRANSFER_OPTIONS = [
-    "Airport Transfer",
-    "Hotel Transfer",
-    "City Transfer",
-    "Intercity Transfer",
-    "Private Transfer",
-];
-
 interface TourListItem {
     id: number;
     title: string;
@@ -357,10 +349,6 @@ export default function BookingCard({
                 if (!dropoff.trim()) e.dropoff = "Drop-off location is required";
             }
 
-            if (serviceType === "transfer" && !transferOption.trim()) {
-                e.transferOption = "Transfer service is required";
-            }
-
             if (serviceType === "transfer" && !pickupTime.trim()) {
                 e.pickupTime = "Pickup time is required";
             }
@@ -612,7 +600,7 @@ export default function BookingCard({
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Do you plan to use the vehicle at the destination?</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Vehicle at destination?</label>
                                     <select
                                         value={useVehicleAtDestination}
                                         onChange={(e) => setUseVehicleAtDestination(e.target.value as "yes" | "no")}
@@ -623,20 +611,7 @@ export default function BookingCard({
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Select Service</label>
-                                    <select
-                                        value={transferOption}
-                                        onChange={(e) => { setTransferOption(e.target.value); clearErr("transferOption"); }}
-                                        className={cn("w-full h-11 rounded-xl border border-gray-200 bg-gray-50/80 px-3 text-sm", errors.transferOption && "border-red-400")}
-                                    >
-                                        <option value="">Select transfer service</option>
-                                        {TRANSFER_OPTIONS.map((option) => (
-                                            <option key={option} value={option}>{option}</option>
-                                        ))}
-                                    </select>
-                                    <FieldError msg={errors.transferOption} />
-                                </div>
+
                             </>
                         )}
 
@@ -949,7 +924,7 @@ export default function BookingCard({
                         <div>
                             <div className="space-y-3">
                                 <div>
-                                    <label className="block text-xs font-medium text-gray-500 mb-1">User name</label>
+                                    <label className="block text-xs font-medium text-gray-500 mb-1">Name</label>
                                     <div className="relative">
                                         <Input
                                             value={fullName}
