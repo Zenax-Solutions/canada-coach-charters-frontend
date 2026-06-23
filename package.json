@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "node -e \"require('fs').cpSync('.next/static','.next/standalone/.next/static',{recursive:true})\"",
     "start": "next start",
     "lint": "eslint"
   },
