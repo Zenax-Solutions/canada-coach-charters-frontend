@@ -482,7 +482,6 @@ export default function Hero() {
                         <div className="flex items-end gap-1.5 overflow-visible">
                             {(
                                 [
-                                    { key: "charter", label: "Charter" },
                                     { key: "transfer", label: "Transfer" },
                                     { key: "tour", label: "Tour" },
                                 ] as { key: ServiceType; label: string }[]

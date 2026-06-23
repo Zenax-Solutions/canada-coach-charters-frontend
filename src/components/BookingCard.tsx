@@ -483,7 +483,7 @@ export default function BookingCard({
                 </div>
             ) : (
                 <div className="flex bg-gray-100 rounded-xl p-1 mb-5">
-                    {(["charter", "transfer", "tour"] as ServiceType[]).map((t) => (
+                    {(["transfer", "tour"] as ServiceType[]).map((t) => (
                         <button
                             key={t}
                             onClick={() => setServiceType(t)}
