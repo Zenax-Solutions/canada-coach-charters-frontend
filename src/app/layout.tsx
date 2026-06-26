@@ -54,6 +54,9 @@ export const metadata: Metadata = {
     "custom travel itineraries",
     "Canada group travel",
   ],
+  other: {
+    "google-site-verification": "s-qUphVhxYFWwKeFJAUrm81siCj066yn3quMt0ZJ8vM",
+  },
   category: "travel",
   referrer: "origin-when-cross-origin",
   formatDetection: {
