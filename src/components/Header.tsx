@@ -29,7 +29,6 @@ const navLinks = [
     { label: "Services", href: "/services" },
     { label: "Fleet", href: "/fleet" },
     { label: "Transfers", href: "/transfers" },
-    { label: "Tours", href: "/tours" },
     { label: "Contact", href: "/contact" },
 ];
 

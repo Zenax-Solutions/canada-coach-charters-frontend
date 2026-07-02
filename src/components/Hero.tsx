@@ -478,12 +478,11 @@ export default function Hero() {
                 <div className="hidden md:flex w-full lg:w-[420px] shrink-0 items-center">
                     <div className="w-full">
 
-                        {/* Browser-style tabs — Charter / Transfer / Tour */}
+                        {/* Browser-style tabs — Transfer */}
                         <div className="flex items-end gap-1.5 overflow-visible">
                             {(
                                 [
                                     { key: "transfer", label: "Transfer" },
-                                    { key: "tour", label: "Tour" },
                                 ] as { key: ServiceType; label: string }[]
                             ).map((tab, index) => (
                                 <button

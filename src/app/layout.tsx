@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     "Canada group travel",
   ],
   other: {
-    "google-site-verification": "s-qUphVhxYFWwKeFJAUrm81siCj066yn3quMt0ZJ8vM",
+    "google-site-verification": "voyXnPRfLpGaLA7L_35uBGd8yj91htRScQfkbun3jdA",
   },
   category: "travel",
   referrer: "origin-when-cross-origin",
@@ -127,14 +127,14 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-E5CFLVF3Q9"
+          src="https://www.googletagmanager.com/gtag/js?id=G-4CW783XEGB"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-E5CFLVF3Q9');`}
+          gtag('config', 'G-4CW783XEGB');`}
         </Script>
         {children}
         <WhatsAppWidget />
