@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import AboutUs from "@/components/AboutUs";
 import CoreServices from "@/components/CoreServices";
 import FleetSection from "@/components/FleetSection";
-import ToursSection from "@/components/ToursSection";
+
 import WhyChooseUs from "@/components/WhyChooseUs";
 import GTAServiceAreas from "@/components/GTAServiceAreas";
 import HowItWorks from "@/components/HowItWorks";
@@ -96,7 +96,7 @@ export default function Home() {
       <AboutUs />
       <CoreServices />
       <FleetSection />
-      <ToursSection />
+
       <WhyChooseUs />
       <GTAServiceAreas />
       <HowItWorks />
