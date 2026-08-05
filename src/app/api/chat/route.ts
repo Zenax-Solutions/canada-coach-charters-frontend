@@ -31,7 +31,7 @@ Greater Toronto Area (GTA): Toronto, Mississauga, Brampton, Vaughan, Markham, Ri
 - Also available: School Bus, Mini Coach with Washroom, Limousine Bus, Mini Party Bus, Hummer Stretch Limo, Limo SUV Stretch, Sprinter Van/Limo, Black SUV, Stretch Limo, Black Sedan, Town Car
 
 ## WEBSITE PAGES
-- Home: / | Services: /services | Fleet: /fleet | Transfers: /transfers | Tours: /tours
+- Home: / | Services: /services | Fleet: /fleet | Transfers: /transfers
 - Contact: /contact | Blog: /blog | Gallery: /gallery | Get a Quote: /quote
 
 ## QUOTE/BOOKING PROCESS
